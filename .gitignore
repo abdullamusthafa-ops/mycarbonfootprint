@@ -1,0 +1,20 @@
+# Credentials — NEVER commit
+config.php
+
+# Composer dependencies — run: composer install
+vendor/
+vendor.zip
+
+# User-generated screenshots
+Screenshots/
+
+# Local dev tools
+start-server.bat
+
+# Claude AI session files
+.claude/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
