@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
-require 'config.php'; // SMTP credentials — excluded from Git
+require 'config.php'; // SMTP credentials - excluded from Git
 
 $mail = new PHPMailer(true);
 
@@ -78,19 +78,19 @@ try {
         $ratingLabel  = 'Below UAE Average';
         $ratingColor  = '#22c55e';
         $ratingBg     = '#052e16';
-        $compMsg      = 'Great work! Your footprint is <strong>' . $totalCO2 . 't</strong> — below the UAE average of 22t.';
+        $compMsg      = 'Great work! Your footprint is <strong>' . $totalCO2 . 't</strong> - below the UAE average of 22t.';
         $compIcon     = '🌿';
     } elseif ($co2Float <= 22) {
         $ratingLabel  = 'Near UAE Average';
         $ratingColor  = '#f59e0b';
         $ratingBg     = '#1c1107';
-        $compMsg      = 'Your footprint is <strong>' . $totalCO2 . 't</strong> — at or near the UAE average of 22t.';
+        $compMsg      = 'Your footprint is <strong>' . $totalCO2 . 't</strong> - at or near the UAE average of 22t.';
         $compIcon     = '⚡';
     } else {
         $ratingLabel  = 'Above UAE Average';
         $ratingColor  = '#ef4444';
         $ratingBg     = '#1c0505';
-        $compMsg      = 'Your footprint is <strong>' . $totalCO2 . 't</strong> — above the UAE average of 22t. The tips below can help.';
+        $compMsg      = 'Your footprint is <strong>' . $totalCO2 . 't</strong> - above the UAE average of 22t. The tips below can help.';
         $compIcon     = '🔥';
     }
 
@@ -98,7 +98,7 @@ try {
     $gaugePct   = min(round(($co2Float / 44) * 100), 100);
     $gaugeColor = $co2Float < 15 ? '#22c55e' : ($co2Float <= 22 ? '#f59e0b' : '#ef4444');
 
-    // ── Category breakdown — sorted for personalised tips ──
+    // ── Category breakdown - sorted for personalised tips ──
     $categories = [
         'Electricity' => $catElec,
         'Chiller'     => $catChiller,
@@ -128,47 +128,47 @@ try {
     // ── Personalised tips per category ──
     $tipsByCategory = [
         'Chiller' => [
-            'Set your chiller thermostat to 24°C — each degree lower increases energy use significantly.',
+            'Set your chiller thermostat to 24°C - each degree lower increases energy use significantly.',
             'Ensure your chiller system is serviced annually for peak efficiency.',
-            'Check for duct leaks in your chiller distribution system — leaks waste up to 30% of cooling.',
+            'Check for duct leaks in your chiller distribution system - leaks waste up to 30% of cooling.',
         ],
         'Electricity' => [
-            'Set your AC to 24°C — every degree lower adds ~6% to your electricity bill.',
-            'Switch all lighting to LED — they use 75% less energy than incandescents.',
+            'Set your AC to 24°C - every degree lower adds ~6% to your electricity bill.',
+            'Switch all lighting to LED - they use 75% less energy than incandescents.',
             'Unplug devices on standby: TVs, chargers and appliances add up to 10% of your bill.',
         ],
         'Diet' => [
-            'Try 2 meat-free days per week — this alone can cut your diet footprint by 20%.',
+            'Try 2 meat-free days per week - this alone can cut your diet footprint by 20%.',
             'Choose local UAE produce over imported goods when possible.',
             'Reduce food waste: one-third of all food produced globally is wasted.',
         ],
         'Transport' => [
             'Combine errands into single trips to reduce km driven per week.',
-            'Keep tyres properly inflated — under-inflation increases fuel use by up to 3%.',
+            'Keep tyres properly inflated - under-inflation increases fuel use by up to 3%.',
             'Use the Dubai Metro or Abu Dhabi bus for city commutes when feasible.',
         ],
         'Flights' => [
-            'Choose direct flights — takeoff and landing account for most of a flight\'s emissions.',
+            'Choose direct flights - takeoff and landing account for most of a flight\'s emissions.',
             'Consider videoconferencing for business meetings instead of short-haul flights.',
             'Offset unavoidable flights through a verified programme like Gold Standard.',
         ],
         'Gas' => [
-            'Use a pressure cooker — it cuts cooking time and gas usage by up to 70%.',
+            'Use a pressure cooker - it cuts cooking time and gas usage by up to 70%.',
             'Match pot size to burner size to avoid wasted heat.',
-            'Consider an induction cooktop — it\'s 80–90% efficient vs 40% for gas.',
+            'Consider an induction cooktop - it\'s 80–90% efficient vs 40% for gas.',
         ],
         'Spending' => [
-            'Buy second-hand where possible — clothing and electronics have high embedded carbon.',
+            'Buy second-hand where possible - clothing and electronics have high embedded carbon.',
             'Choose quality over quantity: one durable item beats three disposable ones.',
-            'Repair before replacing — extends product life and avoids manufacturing emissions.',
+            'Repair before replacing - extends product life and avoids manufacturing emissions.',
         ],
         'Water' => [
-            'Fix leaking taps — a dripping tap can waste 20,000 litres per year.',
-            'Take showers under 5 minutes — cutting by 2 minutes saves ~30 litres.',
+            'Fix leaking taps - a dripping tap can waste 20,000 litres per year.',
+            'Take showers under 5 minutes - cutting by 2 minutes saves ~30 litres.',
             'Use a bucket instead of a hose to water plants.',
         ],
         'Cooking Oil' => [
-            'Reuse frying oil 2–3 times before disposing — reduces both waste and usage.',
+            'Reuse frying oil 2–3 times before disposing - reduces both waste and usage.',
             'Switch to an air fryer for healthier, lower-oil cooking.',
             'Dispose of used oil responsibly through UAE recycling collection points.',
         ],
@@ -240,7 +240,7 @@ try {
     $mail->addBCC(SMTP_BCC);
 
     $mail->isHTML(true);
-    $mail->Subject = 'Your Carbon Footprint: ' . $totalCO2 . 't CO₂e/year — MyCarbonFootprint.ae';
+    $mail->Subject = 'Your Carbon Footprint: ' . $totalCO2 . 't CO₂e/year - MyCarbonFootprint.ae';
 
     $mail->Body = '<!DOCTYPE html>
 <html lang="en">
@@ -336,7 +336,7 @@ try {
           <tr style="background:rgba(163,230,53,0.04);"><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Cooking Gas</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $gas . ' ' . $gasLabel . '</td></tr>
           <tr><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Cooking Oil</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $oil . ' litres/month</td></tr>
           <tr style="background:rgba(163,230,53,0.04);"><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Tap Water</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $waterQty . ' ' . $waterLabel . '/month</td></tr>
-          <tr><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Weekly Driving</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $weeklyKm . ' km — ' . $vehicleLabel . '</td></tr>
+          <tr><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Weekly Driving</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $weeklyKm . ' km - ' . $vehicleLabel . '</td></tr>
           <tr style="background:rgba(163,230,53,0.04);"><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Flights / year</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">Short ' . $shortHaul . ' · Medium ' . $mediumHaul . ' · Long ' . $longHaul . '</td></tr>
           <tr><td style="padding:9px 12px;color:#c8d8a0;border-bottom:1px solid rgba(255,255,255,0.05);">Dietary Habits</td><td style="padding:9px 12px;color:#f0f4e3;border-bottom:1px solid rgba(255,255,255,0.05);">' . $dietLabel . '</td></tr>
           <tr style="background:rgba(163,230,53,0.04);"><td style="padding:9px 12px;color:#c8d8a0;">Monthly Spending</td><td style="padding:9px 12px;color:#f0f4e3;">AED ' . number_format($totalSpend, 0) . '</td></tr>
@@ -347,7 +347,7 @@ try {
     <!-- ══ CTA ══ -->
     <tr>
       <td style="background:#1a2a08;padding:28px 32px;text-align:center;border-top:1px solid rgba(163,230,53,0.1);">
-        <div style="color:#c8d8a0;font-size:13px;margin-bottom:16px;">Track your progress — recalculate in 30 days to see how you've improved.</div>
+        <div style="color:#c8d8a0;font-size:13px;margin-bottom:16px;">Track your progress - recalculate in 30 days to see how you've improved.</div>
         <a href="https://mycarbonfootprint.ae" style="display:inline-block;background:#4d7c0f;color:#ffffff;text-decoration:none;padding:13px 28px;border-radius:25px;font-size:14px;font-weight:700;letter-spacing:0.3px;">Recalculate My Footprint →</a>
       </td>
     </tr>

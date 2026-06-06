@@ -1,7 +1,7 @@
 <?php
 // ── SMTP Configuration Example ──
 // Copy this file to config.php and fill in your real credentials.
-// config.php is excluded from Git — never commit real credentials.
+// config.php is excluded from Git - never commit real credentials.
 
 define('SMTP_HOST',     'smtp.your-provider.com');
 define('SMTP_PORT',     465);
