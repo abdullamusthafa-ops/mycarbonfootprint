@@ -233,7 +233,7 @@
                         <div class="fields-row">
                             <div class="field_half mrg_rght">
                                 <div class="d_flex label_name">
-                                    <label for="gas">Cooking Gas Usage</label>
+                                    <label>Cooking Gas Usage</label>
                                     <div class="tooltip-wrap">
                                         <button type="button" class="tooltip-btn" aria-label="More information about cooking gas">
                                             <i aria-hidden="true">i</i>
@@ -255,10 +255,12 @@
                                     </label>
                                 </div>
                                 <div id="gasCylinderGroup">
+                                    <label for="gasCylinder" class="visually-hidden">Gas cylinders used per month</label>
                                     <input type="number" id="gasCylinder" name="gas" min="0" step="any"
-                                        placeholder="e.g. 1 (enter 0.5 if used every 2 months)" aria-required="true">
+                                        placeholder="e.g. 1 (enter 0.5 if used every 2 months)">
                                 </div>
                                 <div id="gasVolumeGroup" style="display:none;">
+                                    <label for="gasVolume" class="visually-hidden">Central gas volume in m³ per month</label>
                                     <input type="number" id="gasVolume" name="gasVolume" min="0" step="any"
                                         placeholder="e.g. 10 m³ from your gas bill">
                                 </div>

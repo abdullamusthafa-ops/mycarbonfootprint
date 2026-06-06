@@ -112,6 +112,16 @@ a:focus-visible {
 }
 .d_none { display: none; }
 .hidden { display: none; }
+/* Accessible hidden — visible to screen readers, invisible on screen */
+.visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
 
 /* ── Banner / Hero ── */
 .banner {
@@ -738,7 +748,13 @@ select:disabled {
     cursor: pointer;
     white-space: nowrap;
     margin-bottom: 0 !important;
-    min-height: 28px;
+    min-height: 44px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+.radio-label:hover {
+    background: rgba(163,230,53,0.08);
 }
 .radio-label input[type="radio"] {
     width: 16px;
@@ -815,8 +831,8 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 26px;
-    height: 26px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: #4d7c0f;
     box-shadow: 0 0 0 3px rgba(77,124,15,0.2);
@@ -834,8 +850,8 @@ input[type="range"]:focus-visible {
     outline-offset: 4px;
 }
 input[type="range"]::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
+    width: 44px;
+    height: 44px;
     border: 0;
     border-radius: 50%;
     background: #4d7c0f;
