@@ -1,4 +1,4 @@
-# MyCarbonFootprint.ae — UAE Carbon Footprint Calculator
+# MyCarbonFootprint.ae - UAE Carbon Footprint Calculator
 
 A free, public-awareness carbon footprint calculator for UAE residents, built on the **CFC 2026 Methodology**.
 
@@ -16,7 +16,7 @@ A free, public-awareness carbon footprint calculator for UAE residents, built on
 - Gauge bar vs UAE average (22t/year)
 - Personalised email report with category breakdown
 - View Calculation Methodology PDF
-- WCAG AA accessible — screen reader labels, focus states, touch targets
+- WCAG AA accessible - screen reader labels, focus states, touch targets
 
 ---
 
@@ -75,7 +75,7 @@ cp config.example.php config.php
 ├── style.css               # All styles
 ├── mail.php                # Email report (PHP + PHPMailer)
 ├── config.example.php      # SMTP config template (copy to config.php)
-├── config.php              # SMTP credentials — excluded from Git
+├── config.php              # SMTP credentials - excluded from Git
 ├── screenshot_create.php   # Screenshot capture for email
 ├── assets/
 │   └── CFC_2026_Methodology.pdf  # Official methodology document
