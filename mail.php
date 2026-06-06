@@ -240,7 +240,7 @@ try {
     $mail->addBCC(SMTP_BCC);
 
     $mail->isHTML(true);
-    $mail->Subject = 'Your Carbon Footprint: ' . $totalCO2 . 't CO₂/year — MyCarbonFootprint.ae';
+    $mail->Subject = 'Your Carbon Footprint: ' . $totalCO2 . 't CO₂e/year — MyCarbonFootprint.ae';
 
     $mail->Body = '<!DOCTYPE html>
 <html lang="en">

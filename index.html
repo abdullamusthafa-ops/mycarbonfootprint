@@ -306,7 +306,7 @@
 
                         <div class="fields-row">
                             <div class="field_half mrg_rght">
-                                <label for="fuel">Weekly Kilometres Driven</label>
+                                <label for="fuel">Average Weekly Driving Distance</label>
                                 <div class="range-slider distance">
                                     <input class="range-slider__range" id="fuel" type="range" value="0"
                                         step="100" min="0" max="1000"
@@ -338,7 +338,7 @@
                                             <i aria-hidden="true">i</i>
                                         </button>
                                         <span role="tooltip" class="info info_4">
-                                            <p>Round-trip flights under 2 hrs (e.g. to GCC countries) taken annually.</p>
+                                            <p>Enter return trips per year from Dubai or the UAE. Under 2 hrs, e.g. GCC countries.</p>
                                         </span>
                                     </div>
                                 </div>
@@ -357,7 +357,7 @@
                                             <i aria-hidden="true">i</i>
                                         </button>
                                         <span role="tooltip" class="info info_4">
-                                            <p>Round-trip flights 2–4 hrs (e.g. India, Egypt, Turkey) taken annually.</p>
+                                            <p>Enter return trips per year from Dubai or the UAE. 2–4 hrs, e.g. India, Egypt, Turkey.</p>
                                         </span>
                                     </div>
                                 </div>
@@ -378,7 +378,7 @@
                                             <i aria-hidden="true">i</i>
                                         </button>
                                         <span role="tooltip" class="info info_4">
-                                            <p>Flights over 4+ hrs (e.g. to the Americas or Far East) taken annually.</p>
+                                            <p>Enter return trips per year from Dubai or the UAE. Over 4 hrs, e.g. UK, Europe, Southeast Asia, Americas.</p>
                                         </span>
                                     </div>
                                 </div>
@@ -401,7 +401,7 @@
                         <div class="fields-row">
                             <div class="field_half mrg_rght">
                                 <div class="d_flex label_name">
-                                    <label for="diet">Dietary Habits</label>
+                                    <label for="diet">Food &amp; Diet Pattern</label>
                                     <div class="tooltip-wrap">
                                         <button type="button" class="tooltip-btn" aria-label="More information about dietary habits">
                                             <i aria-hidden="true">i</i>
@@ -423,7 +423,7 @@
 
                             <div class="field_half mrg_lft">
                                 <div class="d_flex label_name">
-                                    <label for="spend">Monthly Spending (AED)</label>
+                                    <label for="spend">Monthly Lifestyle Spending</label>
                                     <div class="tooltip-wrap">
                                         <button type="button" class="tooltip-btn" aria-label="More information about monthly spending">
                                             <i aria-hidden="true">i</i>
@@ -457,10 +457,10 @@
                 <!-- ===== RESULT ===== -->
                 <div class="result resultdata" id="result" style="display:none;" aria-live="polite" aria-atomic="true">
 
-                    <h2>Your Carbon Footprint</h2>
+                    <h2>Your Carbon Footprint is</h2>
                     <div class="result-number">
                         <span id="totalCO2" class="co2-value"> </span>
-                        <span class="co2-unit">tonnes of CO<sub>2</sub> per year</span>
+                        <span class="co2-unit">tonnes of CO<sub>2</sub>e per year</span>
                     </div>
 
                     <!-- Result gauge vs UAE average -->
@@ -489,7 +489,7 @@
                                 <p>Results are estimates based on your inputs and UAE-specific emission factors. Actual carbon footprints may vary.</p>
                             </span>
                         </div>
-                        <span class="small_description">The average carbon footprint in the UAE is 22 tonnes per person per year.</span>
+                        <span class="small_description">This result is an estimate based on the information provided and standard emission factors. Actual emissions may vary depending on supplier, technology, behaviour, and calculation methodology.</span>
                     </div>
 
                     <div class="email-report">
@@ -689,10 +689,10 @@
         var waterQty    = parseFloat(waterEl.value);
         var diet        = dietEl.value;
 
-        // Gas: read from the active field
+        // Gas: read from the active field (optional — blank treated as 0)
         var gasType = document.querySelector('input[name="gasType"]:checked').value;
         var gasActiveId = gasType === 'cylinder' ? 'gasCylinder' : 'gasVolume';
-        var gas = parseFloat(document.getElementById(gasActiveId).value);
+        var gas = parseFloat(document.getElementById(gasActiveId).value) || 0;
 
         if (isNaN(electricity) || electricity < 0) {
             setError('electricity', 'Please enter your monthly electricity usage.');
@@ -702,16 +702,12 @@
             setError('people', 'Please enter at least 1 person.');
             isValid = false;
         }
-        if (isNaN(gas) || gas < 0) {
-            setError('gas', 'Please enter your cooking gas usage.');
-            isValid = false;
-        }
         if (isNaN(waterQty) || waterQty < 0) {
             setError('water', 'Please enter your monthly water consumption.');
             isValid = false;
         }
         if (!diet) {
-            setError('diet', 'Please select your dietary habits.');
+            setError('diet', 'Please select your food &amp; diet pattern.');
             isValid = false;
         }
 
