@@ -391,32 +391,34 @@ a:focus-visible {
 
 /* ── Calculator Section ── */
 .information {
-    background: #141814;
+    background-image: url("images/Footprint_calculater.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
     padding: 48px 0 88px;
     overflow: hidden;
     position: relative;
 }
-/* Subtle radial glow behind the card */
+/* Dark overlay so form stays readable */
 .information::before {
     content: '';
     position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 900px;
-    height: 600px;
-    background: radial-gradient(ellipse, rgba(163,230,53,0.08) 0%, transparent 70%);
+    inset: 0;
+    background: rgba(10, 14, 8, 0.72);
     pointer-events: none;
+    z-index: 0;
 }
-
 .information > .container {
-    background: rgba(30, 35, 25, 0.92);
+    position: relative;
+    z-index: 1;
+    background: rgba(10, 14, 8, 0.78);
     max-width: 760px;
     padding: 52px 44px;
     border-radius: 20px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
     border: 1px solid rgba(163,230,53,0.18);
     border-top: 3px solid #a3e635;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(8px);
 }
 
 .header {
