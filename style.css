@@ -404,21 +404,21 @@ a:focus-visible {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10, 14, 8, 0.72);
+    background: rgba(10, 14, 8, 0.45);
     pointer-events: none;
     z-index: 0;
 }
 .information > .container {
     position: relative;
     z-index: 1;
-    background: rgba(10, 14, 8, 0.78);
+    background: rgba(15, 20, 12, 0.55);
     max-width: 760px;
     padding: 52px 44px;
     border-radius: 20px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
     border: 1px solid rgba(163,230,53,0.18);
     border-top: 3px solid #a3e635;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
 }
 
 .header {
