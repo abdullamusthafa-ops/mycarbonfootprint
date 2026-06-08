@@ -543,12 +543,12 @@ a:focus-visible {
     border-radius: 16px;
     padding: 28px 32px;
     margin-bottom: 24px;
-    background: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.80);
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 .form-section:focus-within {
     border-color: rgba(163,230,53,0.3);
-    background: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.90);
 }
 
 .form-section__title {
