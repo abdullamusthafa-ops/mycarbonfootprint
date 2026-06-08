@@ -69,7 +69,7 @@ h3 {
 h2 {
     font-size: 2.8rem;
     font-weight: 700;
-    color: #d9f99d;
+    color: #ffffff;
 }
 
 p {
@@ -334,7 +334,7 @@ a:focus-visible {
 }
 .about h2 {
     font-size: 2.8rem;
-    color: #d9f99d;
+    color: #ffffff;
     letter-spacing: -0.5px;
     margin-bottom: 28px;
     text-align: left;
@@ -343,7 +343,7 @@ a:focus-visible {
     font-size: 1.05rem;
     line-height: 1.85;
     font-weight: 400;
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.80);
     max-width: 62ch;
     margin: 0;
     text-align: left;
@@ -383,7 +383,7 @@ a:focus-visible {
 .stat-label {
     display: block;
     font-size: 0.82rem;
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.70);
     margin-top: 8px;
     line-height: 1.5;
     font-family: "Montserrat", sans-serif;
@@ -429,10 +429,10 @@ a:focus-visible {
     margin-bottom: 10px;
     font-size: 2.2rem;
     letter-spacing: -0.5px;
-    color: #d9f99d;
+    color: #ffffff;
 }
 .form-intro {
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.82);
     font-size: 1rem;
     margin-top: 6px;
     margin-bottom: 24px;
@@ -591,7 +591,7 @@ label {
     display: block;
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
-    color: #d9f99d;
+    color: #ffffff;
     font-size: 0.95rem;
     margin-bottom: 6px;
     line-height: 1.4;
@@ -618,11 +618,11 @@ select {
     width: 100%;
     padding: 12px 14px;
     box-sizing: border-box;
-    border: 1.5px solid rgba(163,230,53,0.3);
+    border: 1.5px solid rgba(255,255,255,0.25);
     border-radius: 10px;
     font-size: 1rem;
-    color: #e8f0c8;
-    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+    background: rgba(0,0,0,0.25);
     font-family: "Inter", "Montserrat", sans-serif;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     -webkit-appearance: none;
@@ -642,10 +642,10 @@ input[type="email"]:invalid:not(:placeholder-shown) {
 }
 
 ::placeholder {
-    color: rgba(200,216,160,0.45);
+    color: rgba(255,255,255,0.38);
 }
 ::-ms-input-placeholder {
-    color: rgba(200,216,160,0.45);
+    color: rgba(255,255,255,0.38);
 }
 input:focus::placeholder {
     color: transparent;
@@ -659,8 +659,8 @@ select {
     padding-right: 40px;
 }
 select option {
-    background: #2e3d0e;
-    color: #e8f0c8;
+    background: #1a2010;
+    color: #ffffff;
 }
 select:disabled {
     opacity: 0.45;
@@ -669,7 +669,7 @@ select:disabled {
 
 .vehicle-hint {
     display: block;
-    color: #a8c56a;
+    color: rgba(255,255,255,0.55);
     font-size: 0.85rem;
     margin-top: 4px;
     font-style: italic;
@@ -746,7 +746,7 @@ select:disabled {
     gap: 6px;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #d9f99d;
+    color: #ffffff;
     cursor: pointer;
     white-space: nowrap;
     margin-bottom: 0 !important;
@@ -871,7 +871,7 @@ input[type="range"]::-moz-range-thumb:hover {
 .range-slider__value {
     flex-shrink: 0;
     min-width: 90px;
-    color: #d9f99d;
+    color: #ffffff;
     font-size: 0.92rem;
     font-weight: 600;
     text-align: center;
@@ -1006,7 +1006,7 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 .result h2 {
-    color: #d9f99d;
+    color: #ffffff;
     font-size: 1.8rem;
     margin-bottom: 16px;
     letter-spacing: -0.5px;
@@ -1027,7 +1027,7 @@ input[type="range"]::-moz-range-thumb:hover {
 .co2-unit {
     display: block;
     font-size: 1rem;
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.75);
     margin-top: 8px;
     font-weight: 400;
 }
@@ -1042,7 +1042,7 @@ input[type="range"]::-moz-range-thumb:hover {
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.65);
     margin-bottom: 6px;
 }
 .gauge-uae-label {
@@ -1109,7 +1109,7 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 .breakdown-label {
     font-size: 0.85rem;
-    color: #c8d8a0;
+    color: rgba(255,255,255,0.85);
     font-weight: 500;
     white-space: nowrap;
 }
