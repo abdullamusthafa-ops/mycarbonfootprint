@@ -539,16 +539,16 @@ a:focus-visible {
 
 /* ── Form Sections ── */
 .form-section {
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(163,230,53,0.15);
     border-radius: 16px;
     padding: 28px 32px;
     margin-bottom: 24px;
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.05);
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 .form-section:focus-within {
-    border-color: rgba(163,230,53,0.3);
-    background: rgba(255,255,255,0.35);
+    border-color: rgba(163,230,53,0.4);
+    background: rgba(163,230,53,0.06);
 }
 
 .form-section__title {
