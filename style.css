@@ -311,7 +311,7 @@ a:focus-visible {
 
 /* ── About Section ── */
 .about {
-    background: #2e3d0e;
+    background: #1a1f14;
     text-align: left;
     overflow: hidden;
     position: relative;
@@ -357,8 +357,8 @@ a:focus-visible {
     margin-top: 48px;
 }
 .stat-card {
-    background: rgba(163,230,53,0.07);
-    border: 1px solid rgba(163,230,53,0.18);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px;
     padding: 28px 20px;
     text-align: center;
@@ -368,7 +368,7 @@ a:focus-visible {
 }
 .stat-card:hover {
     border-color: #a3e635;
-    background: rgba(163,230,53,0.14);
+    background: rgba(163,230,53,0.08);
     transform: translateY(-4px);
 }
 .stat-number {
@@ -391,7 +391,7 @@ a:focus-visible {
 
 /* ── Calculator Section ── */
 .information {
-    background: #1e2b09;
+    background: #141814;
     padding: 48px 0 88px;
     overflow: hidden;
     position: relative;
@@ -409,7 +409,7 @@ a:focus-visible {
 }
 
 .information > .container {
-    background: rgba(58, 74, 22, 0.80);
+    background: rgba(30, 35, 25, 0.92);
     max-width: 760px;
     padding: 52px 44px;
     border-radius: 20px;
@@ -537,16 +537,16 @@ a:focus-visible {
 
 /* ── Form Sections ── */
 .form-section {
-    border: 1px solid rgba(163,230,53,0.15);
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px;
     padding: 28px 32px;
     margin-bottom: 24px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03);
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 .form-section:focus-within {
-    border-color: rgba(163,230,53,0.4);
-    background: rgba(163,230,53,0.06);
+    border-color: rgba(163,230,53,0.3);
+    background: rgba(255,255,255,0.05);
 }
 
 .form-section__title {
@@ -995,7 +995,7 @@ input[type="range"]::-moz-range-thumb:hover {
 .result {
     margin-top: 28px;
     padding: 36px 28px 28px;
-    background: rgba(26, 38, 8, 0.85);
+    background: rgba(20, 25, 18, 0.95);
     border: 1.5px solid rgba(163,230,53,0.2);
     border-top: 3px solid #a3e635;
     border-radius: 18px;
@@ -1281,7 +1281,7 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* ── Page footer ── */
 .powerd {
-    background: #2e3d0e;
+    background: #161a12;
     padding: 28px 20px;
     font-size: 0.9rem;
     color: #c8d8a0;
