@@ -647,216 +647,201 @@
 
     // ── Main calculation ──
     function calculateFootprint() {
-        try {
-            console.log('✅ Calculate button clicked!');
-            clearErrors();
+        console.log('Calculate button clicked!');
+        clearErrors();
 
-            var isValid = true;
+        var isValid = true;
 
-            var electricityEl = document.getElementById('electricity');
-            var peopleEl      = document.getElementById('people');
-            var waterEl       = document.getElementById('water');
-            var dietEl        = document.getElementById('diet');
+        var electricityEl = document.getElementById('electricity');
+        var peopleEl      = document.getElementById('people');
+        var waterEl       = document.getElementById('water');
+        var dietEl        = document.getElementById('diet');
 
-            var electricity = parseFloat(electricityEl.value);
-            var people      = parseInt(peopleEl.value);
-            var waterQty    = parseFloat(waterEl.value);
-            var diet        = dietEl.value;
+        var electricity = parseFloat(electricityEl.value);
+        var people      = parseInt(peopleEl.value);
+        var waterQty    = parseFloat(waterEl.value);
+        var diet        = dietEl.value;
 
-            // Gas: read from the active field (optional - blank treated as 0)
-            var gasType = document.querySelector('input[name="gasType"]:checked').value;
-            var gasActiveId = gasType === 'cylinder' ? 'gasCylinder' : 'gasVolume';
-            var gas = parseFloat(document.getElementById(gasActiveId).value) || 0;
+        // Gas: read from the active field (optional - blank treated as 0)
+        var gasType = document.querySelector('input[name="gasType"]:checked').value;
+        var gasActiveId = gasType === 'cylinder' ? 'gasCylinder' : 'gasVolume';
+        var gas = parseFloat(document.getElementById(gasActiveId).value) || 0;
 
-            if (isNaN(electricity) || electricity < 0) {
-                setError('electricity', 'Please enter your monthly electricity usage.');
-                isValid = false;
-            }
-            if (isNaN(people) || people < 1) {
-                setError('people', 'Please enter at least 1 person.');
-                isValid = false;
-            }
-            if (isNaN(waterQty) || waterQty < 0) {
-                setError('water', 'Please enter your monthly water consumption.');
-                isValid = false;
-            }
-            if (!diet) {
-                setError('diet', 'Please select your food &amp; diet pattern.');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                showBanner('Please fill in the required fields highlighted below.');
-                // Scroll to first error
-                var firstErr = document.querySelector('.field-error:not(:empty)');
-                if (firstErr) {
-                    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    firstErr.previousElementSibling && firstErr.previousElementSibling.focus();
-                }
-                return;
-            }
-
-            // ── Emission factors - CFC 2026 Methodology ──
-            // Source: DEWA 2024 carbon intensity, EPA, UAE-specific estimates
-            var ef = {
-                electricity:  0.4045,   // kg CO₂e/kWh (DEWA 2024)
-                gasCylinder:  46,       // kg CO₂/cylinder
-                gasM3:        1.94,     // kg CO₂/m³ central gas (EPA)
-                oilDensity:   0.92,     // kg/L cooking oil
-                oilFactor:    2.6,      // kg CO₂/kg cooking oil
-                water:        2.988,    // kg CO₂/m³ (UAE desalination estimate)
-                smallCar:     0.179,    // kg CO₂e/km
-                mediumCar:    0.268,
-                largeCar:     0.572,
-                electricCar:  0.073,    // kg CO₂e/km (0.18 kWh/km × 0.4045)
-                shortHaul:    500,      // kg CO₂e per return trip
-                mediumHaul:   1000,
-                longHaul:     2500,
-                spending:     50        // kg CO₂e per AED 1,000/month
-            };
-
-            // ── Parse inputs ──
-            var chiller     = parseFloat(document.getElementById('chiller').value) || 0;
-            var oil         = parseFloat(document.getElementById('oil').value) || 0;
-            var waterUnit   = document.querySelector('input[name="tapWaterCons"]:checked').value;
-            var weeklyKm    = parseFloat(document.getElementById('fuel').value) || 0;
-            var vehicleType = document.getElementById('vehicle').value;
-            var shortHaul   = parseInt(document.getElementById('shortHaul').value) || 0;
-            var mediumHaul  = parseInt(document.getElementById('mediumHaul').value) || 0;
-            var longHaul    = parseInt(document.getElementById('longHaul').value) || 0;
-            var totalSpend  = parseFloat(document.getElementById('spend').value) || 0;
-
-            console.log('📊 Parsed inputs:', {electricity, people, water: waterQty, diet, gas, gasType});
-
-            // ── Per-person annual figures (all in kg CO₂e) ──
-            var elecCO2    = (electricity / people) * 12 * ef.electricity;
-            var chillerCO2 = (chiller / people) * 12 * ef.electricity;
-            var oilCO2     = (oil * ef.oilDensity * ef.oilFactor * 12) / people;
-
-            // Water: convert to m³ first
-            var waterM3;
-            if (waterUnit === 'cume') {
-                waterM3 = waterQty;
-            } else if (waterUnit === 'ltr') {
-                waterM3 = waterQty / 1000;
-            } else { // imperial gallons
-                waterM3 = waterQty * 0.00454609;
-            }
-            var waterCO2 = (waterM3 * ef.water * 12) / people;
-
-            // Gas
-            var gasCO2;
-            if (gasType === 'cylinder') {
-                gasCO2 = (gas * ef.gasCylinder * 12) / people;
-            } else { // m³ central gas
-                gasCO2 = (gas * ef.gasM3 * 12) / people;
-            }
-
-            // Vehicle (not divided by household - individual choice)
-            var vehicleFactors = { small: ef.smallCar, medium: ef.mediumCar, large: ef.largeCar, electric: ef.electricCar };
-            var fuelEF     = vehicleFactors[vehicleType] || ef.smallCar;
-            var vehicleCO2 = weeklyKm > 0 ? weeklyKm * fuelEF * 52 : 0;
-
-            // Flights (not divided by household)
-            var flightsCO2 = (shortHaul * ef.shortHaul) + (mediumHaul * ef.mediumHaul) + (longHaul * ef.longHaul);
-
-            // Diet - fixed annual values per methodology (kg/year)
-            var dietMap = { low: 5100, regular: 5300, large: 7600, extralarge: 10000, medium: 5300 };
-            var dietCO2 = dietMap[diet] || 5100;
-
-            // Lifestyle spending (not divided by household)
-            var spendCO2 = (totalSpend / 1000) * ef.spending * 12;
-
-            // Total in tonnes of CO₂e
-            var totalCO2 = (elecCO2 + chillerCO2 + oilCO2 + waterCO2 + gasCO2 + vehicleCO2 + flightsCO2 + dietCO2 + spendCO2) / 1000;
-
-            console.log('✅ Calculations complete. Total:', totalCO2.toFixed(2));
-
-            // ── Store results for display & email ──
-            document.getElementById('emailtotalCO2').value    = totalCO2.toFixed(2);
-            document.getElementById('co2_electricity').value  = (elecCO2    / 1000).toFixed(3);
-            document.getElementById('co2_chiller').value      = (chillerCO2 / 1000).toFixed(3);
-            document.getElementById('co2_gas').value          = (gasCO2     / 1000).toFixed(3);
-            document.getElementById('co2_water').value        = (waterCO2   / 1000).toFixed(3);
-            document.getElementById('co2_oil').value          = (oilCO2     / 1000).toFixed(3);
-            document.getElementById('co2_transport').value    = (vehicleCO2 / 1000).toFixed(3);
-            document.getElementById('co2_flights').value      = (flightsCO2 / 1000).toFixed(3);
-            document.getElementById('co2_diet').value         = (dietCO2    / 1000).toFixed(3);
-            document.getElementById('co2_spending').value     = (spendCO2   / 1000).toFixed(3);
-
-            // Gauge (max scale = 44t for visual)
-            var gaugeEl = document.getElementById('gaugeFill');
-            if (gaugeEl) {
-                var pct     = Math.min((totalCO2 / 44) * 100, 100);
-                gaugeEl.style.width = pct + '%';
-                gaugeEl.style.background = totalCO2 <= 10 ? '#22c55e' : totalCO2 <= 22 ? '#f59e0b' : '#ef4444';
-            }
-
-            var msgEl = document.getElementById('gaugeMessage');
-            if (msgEl) {
-                if (totalCO2 < 15) {
-                    msgEl.textContent = 'Great work! Your footprint is below the UAE average.';
-                    msgEl.className = 'gauge-message gauge-message--good';
-                } else if (totalCO2 <= 22) {
-                    msgEl.textContent = 'You\'re at or near the UAE average. Small changes can make a big difference.';
-                    msgEl.className = 'gauge-message gauge-message--mid';
-                } else {
-                    msgEl.textContent = 'Your footprint is above the UAE average. Consider the tips below.';
-                    msgEl.className = 'gauge-message gauge-message--high';
-                }
-            }
-
-            // Breakdown bars - all 9 categories per methodology
-            var breakdown = [
-                { label: 'Electricity',  value: elecCO2    / 1000 },
-                { label: 'Chiller',      value: chillerCO2 / 1000 },
-                { label: 'Cooking Gas',  value: gasCO2     / 1000 },
-                { label: 'Cooking Oil',  value: oilCO2     / 1000 },
-                { label: 'Water',        value: waterCO2   / 1000 },
-                { label: 'Transport',    value: vehicleCO2 / 1000 },
-                { label: 'Flights',      value: flightsCO2 / 1000 },
-                { label: 'Food & Diet',  value: dietCO2    / 1000 },
-                { label: 'Spending',     value: spendCO2   / 1000 }
-            ];
-            var bdContainer = document.getElementById('resultBreakdown');
-            if (bdContainer) {
-                bdContainer.innerHTML = '';
-                breakdown.forEach(function (item) {
-                    var itemPct = totalCO2 > 0 ? Math.min((item.value / totalCO2) * 100, 100) : 0;
-                    var div = document.createElement('div');
-                    div.className = 'breakdown-item';
-                    div.innerHTML =
-                        '<span class="breakdown-label">' + item.label + '</span>' +
-                        '<div class="breakdown-bar-track" aria-hidden="true">' +
-                        '  <div class="breakdown-bar-fill" style="width:' + itemPct.toFixed(1) + '%"></div>' +
-                        '</div>' +
-                        '<span class="breakdown-value">' + item.value.toFixed(2) + 't</span>';
-                    bdContainer.appendChild(div);
-                });
-            }
-
-            // Show result + scroll
-            var resultEl = document.getElementById('result');
-            var resultBtn = document.getElementById('result_button');
-            if (resultEl) resultEl.style.display = 'block';
-            if (resultBtn) resultBtn.style.display = 'block';
-
-            console.log('✅ Results displayed');
-
-            setTimeout(function () {
-                if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Fire animated counter after scroll lands (~600ms)
-                setTimeout(function () {
-                    animateCounter(document.getElementById('totalCO2'), totalCO2, 1600);
-                }, 600);
-            }, 100);
-
-            // Screenshot for email
-            changeToImg();
-        } catch (error) {
-            console.error('❌ Error in calculateFootprint:', error);
-            showBanner('An error occurred during calculation. Please check the console.');
+        if (isNaN(electricity) || electricity < 0) {
+            setError('electricity', 'Please enter your monthly electricity usage.');
+            isValid = false;
         }
+        if (isNaN(people) || people < 1) {
+            setError('people', 'Please enter at least 1 person.');
+            isValid = false;
+        }
+        if (isNaN(waterQty) || waterQty < 0) {
+            setError('water', 'Please enter your monthly water consumption.');
+            isValid = false;
+        }
+        if (!diet) {
+            setError('diet', 'Please select your food &amp; diet pattern.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            showBanner('Please fill in the required fields highlighted below.');
+            // Scroll to first error
+            var firstErr = document.querySelector('.field-error:not(:empty)');
+            if (firstErr) {
+                firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstErr.previousElementSibling && firstErr.previousElementSibling.focus();
+            }
+            return;
+        }
+
+        // ── Emission factors - CFC 2026 Methodology ──
+        // Source: DEWA 2024 carbon intensity, EPA, UAE-specific estimates
+        var ef = {
+            electricity:  0.4045,   // kg CO₂e/kWh (DEWA 2024)
+            gasCylinder:  46,       // kg CO₂/cylinder
+            gasM3:        1.94,     // kg CO₂/m³ central gas (EPA)
+            oilDensity:   0.92,     // kg/L cooking oil
+            oilFactor:    2.6,      // kg CO₂/kg cooking oil
+            water:        2.988,    // kg CO₂/m³ (UAE desalination estimate)
+            smallCar:     0.179,    // kg CO₂e/km
+            mediumCar:    0.268,
+            largeCar:     0.572,
+            electricCar:  0.073,    // kg CO₂e/km (0.18 kWh/km × 0.4045)
+            shortHaul:    500,      // kg CO₂e per return trip
+            mediumHaul:   1000,
+            longHaul:     2500,
+            spending:     50        // kg CO₂e per AED 1,000/month
+        };
+
+        // ── Parse inputs ──
+        var chiller     = parseFloat(document.getElementById('chiller').value) || 0;
+        var oil         = parseFloat(document.getElementById('oil').value) || 0;
+        var waterUnit   = document.querySelector('input[name="tapWaterCons"]:checked').value;
+        // gas & gasType already parsed during validation above
+        var weeklyKm    = parseFloat(document.getElementById('fuel').value) || 0;
+        var vehicleType = document.getElementById('vehicle').value;
+        var shortHaul   = parseInt(document.getElementById('shortHaul').value) || 0;
+        var mediumHaul  = parseInt(document.getElementById('mediumHaul').value) || 0;
+        var longHaul    = parseInt(document.getElementById('longHaul').value) || 0;
+        var totalSpend  = parseFloat(document.getElementById('spend').value) || 0;
+
+        // ── Per-person annual figures (all in kg CO₂e) ──
+        // Electricity: (monthly kWh ÷ people) × 12 × 0.4045
+        var elecCO2    = (electricity / people) * 12 * ef.electricity;
+        // Chiller: same factor as electricity (entered as kWh)
+        var chillerCO2 = (chiller / people) * 12 * ef.electricity;
+        // Cooking oil: (monthly litres × 0.92 × 2.6 × 12) ÷ people
+        var oilCO2     = (oil * ef.oilDensity * ef.oilFactor * 12) / people;
+
+        // Water: convert to m³ first
+        var waterM3;
+        if (waterUnit === 'cume') {
+            waterM3 = waterQty;
+        } else if (waterUnit === 'ltr') {
+            waterM3 = waterQty / 1000;
+        } else { // imperial gallons
+            waterM3 = waterQty * 0.00454609;
+        }
+        var waterCO2 = (waterM3 * ef.water * 12) / people;
+
+        // Gas
+        var gasCO2;
+        if (gasType === 'cylinder') {
+            gasCO2 = (gas * ef.gasCylinder * 12) / people;
+        } else { // m³ central gas
+            gasCO2 = (gas * ef.gasM3 * 12) / people;
+        }
+
+        // Vehicle (not divided by household - individual choice)
+        var vehicleFactors = { small: ef.smallCar, medium: ef.mediumCar, large: ef.largeCar, electric: ef.electricCar };
+        var fuelEF     = vehicleFactors[vehicleType] || ef.smallCar;
+        var vehicleCO2 = weeklyKm > 0 ? weeklyKm * fuelEF * 52 : 0;
+
+        // Flights (not divided by household)
+        var flightsCO2 = (shortHaul * ef.shortHaul) + (mediumHaul * ef.mediumHaul) + (longHaul * ef.longHaul);
+
+        // Diet - fixed annual values per methodology (kg/year)
+        var dietMap = { low: 5100, regular: 5300, large: 7600, extralarge: 10000, medium: 5300 };
+        var dietCO2 = dietMap[diet] || 5100;
+
+        // Lifestyle spending (not divided by household)
+        var spendCO2 = (totalSpend / 1000) * ef.spending * 12;
+
+        // Total in tonnes of CO₂e
+        var totalCO2 = (elecCO2 + chillerCO2 + oilCO2 + waterCO2 + gasCO2 + vehicleCO2 + flightsCO2 + dietCO2 + spendCO2) / 1000;
+
+        // ── Store results for display & email ──
+        document.getElementById('emailtotalCO2').value    = totalCO2.toFixed(2);
+        document.getElementById('co2_electricity').value  = (elecCO2    / 1000).toFixed(3);
+        document.getElementById('co2_chiller').value      = (chillerCO2 / 1000).toFixed(3);
+        document.getElementById('co2_gas').value          = (gasCO2     / 1000).toFixed(3);
+        document.getElementById('co2_water').value        = (waterCO2   / 1000).toFixed(3);
+        document.getElementById('co2_oil').value          = (oilCO2     / 1000).toFixed(3);
+        document.getElementById('co2_transport').value    = (vehicleCO2 / 1000).toFixed(3);
+        document.getElementById('co2_flights').value      = (flightsCO2 / 1000).toFixed(3);
+        document.getElementById('co2_diet').value         = (dietCO2    / 1000).toFixed(3);
+        document.getElementById('co2_spending').value     = (spendCO2   / 1000).toFixed(3);
+
+        // Gauge (max scale = 44t for visual)
+        var gaugeEl = document.getElementById('gaugeFill');
+        var pct     = Math.min((totalCO2 / 44) * 100, 100);
+        gaugeEl.style.width = pct + '%';
+        gaugeEl.style.background = totalCO2 <= 10 ? '#22c55e' : totalCO2 <= 22 ? '#f59e0b' : '#ef4444';
+
+        var msgEl = document.getElementById('gaugeMessage');
+        if (totalCO2 < 15) {
+            msgEl.textContent = 'Great work! Your footprint is below the UAE average.';
+            msgEl.className = 'gauge-message gauge-message--good';
+        } else if (totalCO2 <= 22) {
+            msgEl.textContent = 'You\'re at or near the UAE average. Small changes can make a big difference.';
+            msgEl.className = 'gauge-message gauge-message--mid';
+        } else {
+            msgEl.textContent = 'Your footprint is above the UAE average. Consider the tips below.';
+            msgEl.className = 'gauge-message gauge-message--high';
+        }
+
+        // Breakdown bars - all 9 categories per methodology
+        var breakdown = [
+            { label: 'Electricity',  value: elecCO2    / 1000 },
+            { label: 'Chiller',      value: chillerCO2 / 1000 },
+            { label: 'Cooking Gas',  value: gasCO2     / 1000 },
+            { label: 'Cooking Oil',  value: oilCO2     / 1000 },
+            { label: 'Water',        value: waterCO2   / 1000 },
+            { label: 'Transport',    value: vehicleCO2 / 1000 },
+            { label: 'Flights',      value: flightsCO2 / 1000 },
+            { label: 'Food & Diet',  value: dietCO2    / 1000 },
+            { label: 'Spending',     value: spendCO2   / 1000 }
+        ];
+        var bdContainer = document.getElementById('resultBreakdown');
+        bdContainer.innerHTML = '';
+        breakdown.forEach(function (item) {
+            var itemPct = totalCO2 > 0 ? Math.min((item.value / totalCO2) * 100, 100) : 0;
+            var div = document.createElement('div');
+            div.className = 'breakdown-item';
+            div.innerHTML =
+                '<span class="breakdown-label">' + item.label + '</span>' +
+                '<div class="breakdown-bar-track" aria-hidden="true">' +
+                '  <div class="breakdown-bar-fill" style="width:' + itemPct.toFixed(1) + '%"></div>' +
+                '</div>' +
+                '<span class="breakdown-value">' + item.value.toFixed(2) + 't</span>';
+            bdContainer.appendChild(div);
+        });
+
+        // Show result + scroll
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result_button').style.display = 'block';
+
+        setTimeout(function () {
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Fire animated counter after scroll lands (~600ms)
+            setTimeout(function () {
+                animateCounter(document.getElementById('totalCO2'), totalCO2, 1600);
+            }, 600);
+        }, 100);
+
+        // Screenshot for email
+        changeToImg();
     }
 
     // ── Screenshot capture ──
