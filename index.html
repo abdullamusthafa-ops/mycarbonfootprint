@@ -852,58 +852,19 @@
     }
 
     function changeToImg() {
+        // Simplified screenshot function - errors fail silently
         try {
-            var toImgArea         = document.getElementById('result');
-            var toImgCompleteArea = document.getElementById('getresult');
+            var toImgArea = document.getElementById('result');
+            if (!toImgArea) return;
 
-            if (toImgArea) {
-                html2canvas(toImgArea, { allowTaint: true, taintTest: false, type: 'view' }).then(function (canvas) {
-                    saveScreenshot(canvas);
-                    var screenshotData = canvas.toDataURL('image/jpeg');
-                    // Note: GitHub Pages doesn't support PHP, so this request will fail gracefully
-                    fetch('screenshot_create.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: 'screenshot_data=' + encodeURIComponent(screenshotData)
-                    })
-                    .then(function (r) { return r.json(); })
-                    .then(function (resp) {
-                        if (document.getElementById('image_name')) {
-                            document.getElementById('image_name').value        = resp.image;
-                        }
-                        if (document.getElementById('social_image_name')) {
-                            document.getElementById('social_image_name').value = resp.image;
-                        }
-                    })
-                    .catch(function () { /* screenshot upload failed silently */ });
-                }).catch(function () { /* html2canvas failed silently */ });
-            }
-
-            if (toImgCompleteArea) {
-                html2canvas(toImgCompleteArea, { allowTaint: true, taintTest: false, type: 'view' }).then(function (canvas) {
-                    saveScreenshot(canvas);
-                    var screenshotData = canvas.toDataURL('image/jpeg');
-                    fetch('screenshot_create.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: 'screenshot_data=' + encodeURIComponent(screenshotData)
-                    })
-                    .then(function (r) { return r.json(); })
-                    .then(function (resp) {
-                        if (document.getElementById('complete_image_name')) {
-                            document.getElementById('complete_image_name').value        = resp.image;
-                        }
-                        if (document.getElementById('social_complete_image_name')) {
-                            document.getElementById('social_complete_image_name').value = resp.image;
-                        }
-                    })
-                    .catch(function () { /* screenshot upload failed silently */ });
-                }).catch(function () { /* html2canvas failed silently */ });
-            }
-        } catch (e) {
-            // Screenshot feature failed - but calculation still works
-            console.log('Screenshot feature unavailable');
-        }
+            html2canvas(toImgArea, { allowTaint: true, taintTest: false }).then(function (canvas) {
+                var screenshotData = canvas.toDataURL('image/jpeg');
+                fetch('screenshot_create.php', {
+                    method: 'POST',
+                    body: 'screenshot_data=' + encodeURIComponent(screenshotData)
+                }).catch(function () {});
+            }).catch(function () {});
+        } catch (e) {}
     }
 
     // ── Email report ──
