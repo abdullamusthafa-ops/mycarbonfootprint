@@ -1020,47 +1020,44 @@
     }
 
     // ── Form progress stepper ──
-    (function () {
-        var formSections = document.querySelectorAll('.form-section');
-        var stepEls  = [
-            document.getElementById('step-energy'),
-            document.getElementById('step-transport'),
-            document.getElementById('step-lifestyle')
-        ];
-        var lineEls = [
-            document.getElementById('line-1'),
-            document.getElementById('line-2')
-        ];
+    // DISABLED: Elements don't exist in HTML, causing null reference errors
+    // (function () {
+    //     var formSections = document.querySelectorAll('.form-section');
+    //     var stepEls  = [
+    //         document.getElementById('step-energy'),
+    //         document.getElementById('step-transport'),
+    //         document.getElementById('step-lifestyle')
+    //     ];
+    //     var lineEls = [
+    //         document.getElementById('line-1'),
+    //         document.getElementById('line-2')
+    //     ];
 
-        function setStep(activeIndex) {
-            stepEls.forEach(function (s, i) {
-                if (s) {  // Only if element exists
-                    s.classList.remove('active', 'done');
-                    if (i < activeIndex)      s.classList.add('done');
-                    else if (i === activeIndex) s.classList.add('active');
-                }
-            });
-            lineEls.forEach(function (l, i) {
-                if (l) {  // Only if element exists
-                    l.classList.toggle('done', i < activeIndex);
-                }
-            });
-        }
-
-        setStep(0); // Energy active by default
-
-        if (!('IntersectionObserver' in window) || formSections.length < 3) return;
-
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                var idx = Array.prototype.indexOf.call(formSections, entry.target);
-                if (idx >= 0) setStep(idx);
-            });
-        }, { threshold: 0.35, rootMargin: '0px 0px -40% 0px' });
-
-        formSections.forEach(function (s) { observer.observe(s); });
-    })();
+    //     function setStep(activeIndex) {
+    //         stepEls.forEach(function (s, i) {
+    //             if (s) {
+    //                 s.classList.remove('active', 'done');
+    //                 if (i < activeIndex)      s.classList.add('done');
+    //                 else if (i === activeIndex) s.classList.add('active');
+    //             }
+    //         });
+    //         lineEls.forEach(function (l, i) {
+    //             if (l) {
+    //                 l.classList.toggle('done', i < activeIndex);
+    //             }
+    //         });
+    //     }
+    //     setStep(0);
+    //     if (!('IntersectionObserver' in window) || formSections.length < 3) return;
+    //     var observer = new IntersectionObserver(function (entries) {
+    //         entries.forEach(function (entry) {
+    //             if (!entry.isIntersecting) return;
+    //             var idx = Array.prototype.indexOf.call(formSections, entry.target);
+    //             if (idx >= 0) setStep(idx);
+    //         });
+    //     }, { threshold: 0.35, rootMargin: '0px 0px -40% 0px' });
+    //     formSections.forEach(function (s) { observer.observe(s); });
+    // })();
 
     // ── Social sharing ──
     var shareText = 'I just calculated my carbon footprint using the UAE Carbon Footprint Calculator!';
