@@ -142,7 +142,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <input type="number" id="electricity" name="electricity" min="0" step="any"
+                                <input type="number" id="electricity" name="electricity" min="0" step="any" value="800"
                                     placeholder="e.g. 800 kWh" aria-required="true">
                                 <span class="field-error" id="err-electricity" role="alert"></span>
                             </div>
@@ -261,7 +261,7 @@
                                         Imperial Gallons
                                     </label>
                                 </div>
-                                <input type="number" id="water" name="water" min="0" placeholder="e.g. 20" step="any" aria-required="true">
+                                <input type="number" id="water" name="water" min="0" placeholder="e.g. 20" step="any" value="20" aria-required="true">
                                 <span class="field-error" id="err-water" role="alert"></span>
                             </div>
                         </div>
@@ -384,9 +384,8 @@
                                     </div>
                                 </div>
                                 <select id="diet" name="diet" aria-required="true">
-                                    <option value="">Choose your dietary habits</option>
+                                    <option value="regular" selected>Meat 2–3 times a week</option>
                                     <option value="low">Mostly veg, low meat</option>
-                                    <option value="regular">Meat 2–3 times a week</option>
                                     <option value="large">Meat 4–5 times a week</option>
                                     <option value="extralarge">Meat daily</option>
                                 </select>
