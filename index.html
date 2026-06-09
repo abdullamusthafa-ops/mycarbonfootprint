@@ -1034,12 +1034,16 @@
 
         function setStep(activeIndex) {
             stepEls.forEach(function (s, i) {
-                s.classList.remove('active', 'done');
-                if (i < activeIndex)      s.classList.add('done');
-                else if (i === activeIndex) s.classList.add('active');
+                if (s) {  // Only if element exists
+                    s.classList.remove('active', 'done');
+                    if (i < activeIndex)      s.classList.add('done');
+                    else if (i === activeIndex) s.classList.add('active');
+                }
             });
             lineEls.forEach(function (l, i) {
-                l.classList.toggle('done', i < activeIndex);
+                if (l) {  // Only if element exists
+                    l.classList.toggle('done', i < activeIndex);
+                }
             });
         }
 
