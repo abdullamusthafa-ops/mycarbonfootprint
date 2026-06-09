@@ -1,594 +1,1101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UAE Carbon Footprint Calculator - CFC 2026</title>
-  <meta name="description" content="Calculate your annual carbon footprint based on your lifestyle in the UAE using CFC 2026 methodology." />
-  <meta name="robots" content="index, follow" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow" />
+    <title>Measure & Track Your Carbon Footprint - UAE Calculator</title>
 
-  <style>
-    :root {
-      --green: #1f7a5c;
-      --green-dark: #155943;
-      --soft-green: #e9f6f1;
-      --cream: #fbfaf6;
-      --text: #1f2933;
-      --muted: #6b7280;
-      --border: #d9e3df;
-      --white: #ffffff;
-    }
+    <meta name="description" content="Use our UAE carbon footprint calculator to estimate emissions and monitor your impact. Take conscious steps to reduce your footprint over time." />
 
-    * {
-      box-sizing: border-box;
-    }
+    <!-- Open Graph -->
+    <meta property="og:title" content="Measure & Track Your Carbon Footprint - UAE Calculator" />
+    <meta property="og:description" content="Use our UAE carbon footprint calculator to estimate emissions and monitor your impact. Take conscious steps to reduce your footprint over time." />
+    <meta property="og:image" content="https://mycarbonfootprint.ae/images/1.png" />
+    <meta property="og:url" content="https://mycarbonfootprint.ae/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="My Carbon Footprint" />
+    <meta property="og:locale" content="en_AE" />
 
-    body {
-      margin: 0;
-      padding: 32px 16px;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f4fbf8, #fbfaf6);
-      color: var(--text);
-    }
+    <link rel="canonical" href="https://mycarbonfootprint.ae/" />
+    <link rel="alternate" href="https://mycarbonfootprint.ae/" hreflang="en-AE" />
+    <link rel="icon" type="image/x-icon" href="./images/Recall_fav.ico">
 
-    .calculator {
-      max-width: 780px;
-      margin: 0 auto;
-      background: var(--white);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 20px 50px rgba(31, 122, 92, 0.12);
-      border: 1px solid var(--border);
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./style.css">
 
-    h1 {
-      margin: 0 0 8px;
-      text-align: center;
-      color: var(--green-dark);
-      font-size: 32px;
-    }
-
-    .intro {
-      text-align: center;
-      color: var(--muted);
-      margin: 0 0 28px;
-      line-height: 1.5;
-    }
-
-    .section {
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-
-    .section-title {
-      margin: 0 0 16px;
-      color: var(--green-dark);
-      font-size: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .help {
-      margin: -2px 0 8px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      font-size: 16px;
-      background: var(--white);
-      margin-bottom: 16px;
-    }
-
-    input[type="number"]:focus,
-    select:focus {
-      outline: 2px solid rgba(31, 122, 92, 0.2);
-      border-color: var(--green);
-    }
-
-    input[type="range"] {
-      width: 100%;
-      margin: 8px 0 4px;
-      accent-color: var(--green);
-    }
-
-    .range-value {
-      display: inline-block;
-      margin-bottom: 16px;
-      color: var(--green-dark);
-      font-weight: 700;
-      background: var(--soft-green);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 14px;
-    }
-
-    .radio-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .radio-card {
-      flex: 1;
-      min-width: 220px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--white);
-      cursor: pointer;
-    }
-
-    .radio-card input {
-      width: auto;
-      margin: 0;
-      accent-color: var(--green);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      background: var(--green);
-      color: white;
-      padding: 16px;
-      border-radius: 16px;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      background: var(--green-dark);
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .result-box {
-      display: none;
-      margin-top: 24px;
-      padding: 28px;
-      border-radius: 24px;
-      text-align: center;
-      background: linear-gradient(135deg, #dff5ec, #ffffff);
-      border: 2px solid var(--green);
-      box-shadow: 0 18px 40px rgba(31, 122, 92, 0.18);
-    }
-
-    .result-box h2 {
-      margin: 0 0 8px;
-      color: var(--green-dark);
-      font-size: 22px;
-    }
-
-    .result-value {
-      font-size: 52px;
-      font-weight: 800;
-      color: var(--green-dark);
-      line-height: 1;
-      margin: 10px 0;
-    }
-
-    .result-unit {
-      color: var(--text);
-      font-size: 18px;
-      margin: 0;
-    }
-
-    .breakdown {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      text-align: left;
-    }
-
-    .breakdown-item {
-      background: rgba(255,255,255,0.78);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 14px;
-    }
-
-    .breakdown-item strong {
-      display: block;
-      color: var(--green-dark);
-      margin-bottom: 4px;
-    }
-
-    .disclaimer {
-      margin-top: 18px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 650px) {
-      .calculator {
-        padding: 20px;
-      }
-
-      .grid-2,
-      .grid-3,
-      .breakdown {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 26px;
-      }
-
-      .result-value {
-        font-size: 44px;
-      }
-    }
-  </style>
+    <meta name="google-site-verification" content="Vrzmg74EvxbG5XohnNwafEXyFT3v41fR81quRmnciaU" />
+    <meta name="theme-color" content="#2d3a0e">
 </head>
-
 <body>
-  <main class="calculator">
-    <h1>Carbon Footprint Calculator</h1>
-    <p class="intro">
-      Estimate your annual carbon footprint using CFC 2026 methodology with UAE-specific emission factors.
-    </p>
 
-    <section class="section">
-      <h2 class="section-title">Home Energy & Utilities</h2>
+    <!-- Skip to main content (keyboard accessibility) -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
-      <label for="people">Number of People in Household</label>
-      <p class="help">Used to divide shared household emissions fairly per person.</p>
-      <input type="number" id="people" min="1" step="1" value="1" />
-
-      <label for="electricity">Monthly Electricity Usage (kWh)</label>
-      <p class="help">Enter your household electricity consumption in kWh from your DEWA/FEWA bill.</p>
-      <input type="number" id="electricity" min="0" step="0.01" placeholder="kWh per month" />
-
-      <label for="chiller">Monthly Chiller Consumption (kWh)</label>
-      <p class="help">Enter only if you have a separate chiller bill.</p>
-      <input type="number" id="chiller" min="0" step="0.01" placeholder="kWh per month" />
-
-      <label>Cooking Gas Usage</label>
-      <p class="help">Choose how your gas is billed: cylinders or central gas line.</p>
-
-      <div class="radio-row">
-        <label class="radio-card">
-          <input type="radio" name="gasMode" value="cylinders" checked />
-          Cylinders/Month
-        </label>
-        <label class="radio-card">
-          <input type="radio" name="gasMode" value="volume" />
-          Central gas (m³)
-        </label>
-      </div>
-
-      <div id="gasCylinderInput">
-        <label for="gasCylinders">Gas Cylinders Used per Month</label>
-        <p class="help">Example: 0.5 if you use one cylinder every 2 months.</p>
-        <input type="number" id="gasCylinders" min="0" step="0.01" placeholder="Cylinders per month" />
-      </div>
-
-      <div id="gasVolumeInput" class="hidden">
-        <label for="gasVolume">Central Gas Consumption (m³)</label>
-        <p class="help">Enter monthly gas volume from your gas bill.</p>
-        <input type="number" id="gasVolume" min="0" step="0.01" placeholder="m³ per month" />
-      </div>
-
-      <label for="cookingOil">Monthly Cooking Oil (litres)</label>
-      <p class="help">Example: 2 bottles × 1.5L = 3L per month.</p>
-      <input type="number" id="cookingOil" min="0" step="0.01" placeholder="Litres per month" />
-
-      <label for="water">Monthly Tap Water Consumption</label>
-      <p class="help">Enter your consumption and select the unit.</p>
-
-      <div class="grid-2">
-        <input type="number" id="water" min="0" step="0.01" placeholder="Water consumption" />
-        <select id="waterUnit">
-          <option value="m3">Cubic metres (m³)</option>
-          <option value="litres">Litres</option>
-          <option value="imperialGallons">Imperial gallons</option>
-        </select>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Transport</h2>
-
-      <label for="weeklyKm">Average Weekly Driving Distance (km)</label>
-      <p class="help">Use the slider to estimate your weekly driving.</p>
-      <input type="range" id="weeklyKm" min="0" max="1000" step="10" value="100" />
-      <span class="range-value" id="weeklyKmValue">100 km/week</span>
-
-      <label for="vehicleType">Vehicle Type</label>
-      <p class="help">Choose your main vehicle type.</p>
-      <select id="vehicleType">
-        <option value="small">Small car (15–18 km/L)</option>
-        <option value="medium">Medium car (10–12 km/L)</option>
-        <option value="large">Large car / SUV (4–6 km/L)</option>
-        <option value="electric">Electric car (0.18 kWh/km)</option>
-      </select>
-
-      <label>Flights Taken Annually (return trips)</label>
-      <p class="help">Enter return trips per year from UAE.</p>
-
-      <div class="grid-3">
-        <div>
-          <label for="shortFlights">Short-haul (&lt;2 hrs)</label>
-          <p class="help">e.g. GCC</p>
-          <input type="number" id="shortFlights" min="0" step="1" placeholder="0" />
-        </div>
-        <div>
-          <label for="mediumFlights">Medium-haul (2–4 hrs)</label>
-          <p class="help">e.g. India, Egypt, Turkey</p>
-          <input type="number" id="mediumFlights" min="0" step="1" placeholder="0" />
-        </div>
-        <div>
-          <label for="longFlights">Long-haul (&gt;4 hrs)</label>
-          <p class="help">e.g. Europe, Americas, Asia</p>
-          <input type="number" id="longFlights" min="0" step="1" placeholder="0" />
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Lifestyle</h2>
-
-      <label for="diet">Food & Diet Pattern</label>
-      <p class="help">Choose your usual eating habits.</p>
-      <select id="diet">
-        <option value="5.1">Mostly vegetarian, low meat</option>
-        <option value="5.3">Meat 2–3 times a week</option>
-        <option value="7.6">Meat 4–5 times a week</option>
-        <option value="10">Meat daily</option>
-      </select>
-
-      <label for="spending">Monthly Lifestyle Spending (AED)</label>
-      <p class="help">Goods & services only. Exclude rent, utilities, loans, school fees.</p>
-      <input type="range" id="spending" min="0" max="12000" step="500" value="1000" />
-      <span class="range-value" id="spendingValue">AED 1,000/month</span>
-    </section>
-
-    <button type="button" id="calculateBtn">Calculate My Carbon Footprint</button>
-
-    <section class="result-box" id="resultBox">
-      <h2>Your Annual Carbon Footprint</h2>
-      <div class="result-value" id="totalFootprint">0.00</div>
-      <p class="result-unit">tonnes of CO<sub>2</sub>e per year</p>
-
-      <div class="breakdown" id="breakdown"></div>
-
-      <p class="disclaimer">
-        <strong>Disclaimer:</strong> This result is an estimate based on standard emission factors from CFC 2026 methodology. Actual emissions may vary depending on supplier, technology, and behaviour.
-      </p>
-    </section>
-  </main>
-
-  <script>
-    // CFC 2026 Emission Factors (UAE-specific)
-    const FACTORS = {
-      electricityKgPerKwh: 0.4045,
-      centralGasKgPerM3: 1.94,
-      gasCylinderKgPerCylinder: 46,
-      cookingOilKgCo2PerKgOil: 2.6,
-      cookingOilKgPerLitre: 0.92,
-      waterKgPerM3: 2.988,
-      vehiclesKgPerKm: {
-        small: 0.179,
-        medium: 0.268,
-        large: 0.572,
-        electric: 0.073
-      },
-      flightsTonnesPerReturnTrip: {
-        short: 0.5,
-        medium: 1.0,
-        long: 2.5
-      },
-      spendingKgPer1000AedPerMonth: 50
-    };
-
-    function readNumber(id, fallback = 0) {
-      const element = document.getElementById(id);
-      if (!element) return fallback;
-      const value = parseFloat(element.value);
-      return Number.isFinite(value) ? value : fallback;
-    }
-
-    function readString(id, fallback = "") {
-      const element = document.getElementById(id);
-      return element ? element.value : fallback;
-    }
-
-    function tonnesFromKg(kg) {
-      return kg / 1000;
-    }
-
-    function formatTonnes(value) {
-      return Number.isFinite(value) ? value.toFixed(2) : "0.00";
-    }
-
-    // Update range slider displays
-    document.getElementById("weeklyKm").addEventListener("input", function () {
-      document.getElementById("weeklyKmValue").textContent = `${this.value} km/week`;
-    });
-
-    document.getElementById("spending").addEventListener("input", function () {
-      const formatted = Number(this.value).toLocaleString('en-AE');
-      document.getElementById("spendingValue").textContent = `AED ${formatted}/month`;
-    });
-
-    // Toggle gas input fields
-    document.querySelectorAll('input[name="gasMode"]').forEach(function (radio) {
-      radio.addEventListener("change", function () {
-        const cylinderDiv = document.getElementById("gasCylinderInput");
-        const volumeDiv = document.getElementById("gasVolumeInput");
-        if (this.value === "cylinders") {
-          cylinderDiv.classList.remove("hidden");
-          volumeDiv.classList.add("hidden");
-        } else {
-          cylinderDiv.classList.add("hidden");
-          volumeDiv.classList.remove("hidden");
-        }
-      });
-    });
-
-    // Main calculation function
-    function calculateCarbonFootprint() {
-      console.log("✅ Calculator started");
-
-      const people = Math.max(readNumber("people", 1), 1);
-      const electricityKwhMonthly = readNumber("electricity");
-      const chillerKwhMonthly = readNumber("chiller");
-
-      // Electricity & Chiller (per person per year)
-      const electricityTonnes = tonnesFromKg(
-        (electricityKwhMonthly / people) * 12 * FACTORS.electricityKgPerKwh
-      );
-      const chillerTonnes = tonnesFromKg(
-        (chillerKwhMonthly / people) * 12 * FACTORS.electricityKgPerKwh
-      );
-
-      // Gas
-      const gasMode = document.querySelector('input[name="gasMode"]:checked')?.value || "cylinders";
-      let gasTonnes = 0;
-
-      if (gasMode === "cylinders") {
-        const cylindersMonthly = readNumber("gasCylinders");
-        gasTonnes = tonnesFromKg(
-          (cylindersMonthly * FACTORS.gasCylinderKgPerCylinder * 12) / people
-        );
-      } else {
-        const gasM3Monthly = readNumber("gasVolume");
-        gasTonnes = tonnesFromKg(
-          (gasM3Monthly * FACTORS.centralGasKgPerM3 * 12) / people
-        );
-      }
-
-      // Cooking Oil
-      const cookingOilLitresMonthly = readNumber("cookingOil");
-      const cookingOilTonnes = tonnesFromKg(
-        (cookingOilLitresMonthly * FACTORS.cookingOilKgPerLitre * FACTORS.cookingOilKgCo2PerKgOil * 12) / people
-      );
-
-      // Water
-      let waterMonthly = readNumber("water");
-      const waterUnit = readString("waterUnit", "m3");
-      if (waterUnit === "litres") {
-        waterMonthly = waterMonthly / 1000;
-      } else if (waterUnit === "imperialGallons") {
-        waterMonthly = waterMonthly * 0.00454609;
-      }
-      const waterTonnes = tonnesFromKg((waterMonthly * FACTORS.waterKgPerM3 * 12) / people);
-
-      // Transport
-      const weeklyKmValue = readNumber("weeklyKm", 0);
-      const vehicleType = readString("vehicleType", "small");
-      const vehicleFactor = FACTORS.vehiclesKgPerKm[vehicleType] || FACTORS.vehiclesKgPerKm.small;
-      const vehicleTonnes = tonnesFromKg(weeklyKmValue * 52 * vehicleFactor);
-
-      // Flights
-      const shortFlights = readNumber("shortFlights");
-      const mediumFlights = readNumber("mediumFlights");
-      const longFlights = readNumber("longFlights");
-      const flightTonnes =
-        (shortFlights * FACTORS.flightsTonnesPerReturnTrip.short) +
-        (mediumFlights * FACTORS.flightsTonnesPerReturnTrip.medium) +
-        (longFlights * FACTORS.flightsTonnesPerReturnTrip.long);
-
-      // Diet (annual tonnes)
-      const dietTonnes = readNumber("diet", 5.1);
-
-      // Lifestyle spending
-      const spendingMonthly = readNumber("spending", 0);
-      const spendingTonnes = tonnesFromKg(
-        (spendingMonthly / 1000) * FACTORS.spendingKgPer1000AedPerMonth * 12
-      );
-
-      // Total
-      const totalTonnes =
-        electricityTonnes +
-        chillerTonnes +
-        gasTonnes +
-        cookingOilTonnes +
-        waterTonnes +
-        vehicleTonnes +
-        flightTonnes +
-        dietTonnes +
-        spendingTonnes;
-
-      const safeTotal = Number.isFinite(totalTonnes) ? totalTonnes : 0;
-
-      // Display results
-      document.getElementById("totalFootprint").textContent = formatTonnes(safeTotal);
-
-      const breakdown = [
-        ["Electricity", electricityTonnes],
-        ["Chiller", chillerTonnes],
-        ["Cooking gas", gasTonnes],
-        ["Cooking oil", cookingOilTonnes],
-        ["Tap water", waterTonnes],
-        ["Driving", vehicleTonnes],
-        ["Flights", flightTonnes],
-        ["Food & diet", dietTonnes],
-        ["Lifestyle spending", spendingTonnes]
-      ];
-
-      document.getElementById("breakdown").innerHTML = breakdown
-        .map(function (item) {
-          return `
-            <div class="breakdown-item">
-              <strong>${item[0]}</strong>
-              ${formatTonnes(item[1])} tonnes CO<sub>2</sub>e/year
+    <!-- ===== STICKY NAV ===== -->
+    <div id="sticky-nav" role="navigation" aria-label="Sticky navigation">
+        <div class="sticky-nav-inner">
+            <img src="./images/Logo_icon.svg" alt="MyCarbonFootprint UAE" class="sticky-nav__logo">
+            <div class="sticky-nav__links">
+                <a href="#about">About</a>
+                <a href="#calculate_form">Calculate</a>
+                <a href="#calculate_form" class="sticky-nav__cta">Calculate Now</a>
             </div>
-          `;
-        })
-        .join("");
+        </div>
+    </div>
 
-      document.getElementById("resultBox").style.display = "block";
-      console.log("✅ Calculation complete");
+    <!-- ===== HERO / BANNER ===== -->
+    <header class="banner" id="banner">
+        <div class="container">
+            <div class="head d_flex justify_between">
+                <div class="logo">
+                    <img class="fit-picture" src="./images/Logo_icon.svg" alt="MyCarbonFootprint UAE" />
+                </div>
+                <nav class="menu" aria-label="Main navigation">
+                    <a href="#about">About</a>
+                    <a href="#calculate_form" class="menu-cta">Calculate Now</a>
+                </nav>
+            </div>
+            <div class="banner_content">
+                <h1>How Big is Your<br>Carbon Footprint?</h1>
+                <p class="hero-subtitle">Find out how your daily choices impact the planet in just a few clicks - and take a step toward a greener UAE.</p>
+                <a href="#calculate_form" class="hero-cta" aria-label="Start calculating your carbon footprint">
+                    Calculate Now
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-left:4px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+                <div class="hero-trust">
+                    <span class="hero-trust__item">Free - no sign up</span>
+                    <span class="hero-trust__item">Takes ~3 minutes</span>
+                    <span class="hero-trust__item">UAE-specific data</span>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="hero-scroll-hint" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+
+    <!-- ===== ABOUT ===== -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="animate-on-scroll">What is a Carbon Footprint?</h2>
+            <p class="animate-on-scroll delay-1">Your carbon footprint is the total amount of greenhouse gases you generate through everyday activities like using electricity, driving, flying, and even what you eat. These emissions contribute to climate change, but by being aware of your footprint, you can make conscious decisions that reduce your impact on the planet.</p>
+
+            <!-- UAE emissions stats -->
+            <div class="about-stats">
+                <div class="stat-card animate-on-scroll delay-1">
+                    <span class="stat-number">22t</span>
+                    <span class="stat-label">UAE avg CO₂ per<br>person per year</span>
+                </div>
+                <div class="stat-card animate-on-scroll delay-2">
+                    <span class="stat-number">4t</span>
+                    <span class="stat-label">Global CO₂ target<br>per person by 2050</span>
+                </div>
+                <div class="stat-card animate-on-scroll delay-3">
+                    <span class="stat-number">5×</span>
+                    <span class="stat-label">UAE vs global<br>average emissions</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CALCULATOR ===== -->
+    <section class="information" id="calculate_form">
+        <div class="container">
+            <div id="getresult">
+
+                <div class="header">
+                    <h2>Carbon Footprint Calculator</h2>
+                    <p class="form-intro">Answer a few quick questions about your home, travel &amp; lifestyle - get your personalised CO&#8322; score instantly.</p>
+                </div>
+
+
+                <!-- Inline validation error banner -->
+                <div id="form-error-banner" class="form-error-banner" role="alert" aria-live="assertive" style="display:none;"></div>
+
+                <form id="footprintForm" novalidate>
+
+                    <!-- ── SECTION 1: ENERGY ── -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            Energy
+                        </h3>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label for="electricity">Monthly Electricity Usage (kWh)</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about electricity usage">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info">
+                                            <p>Enter your household's monthly electricity usage in kWh (from your DEWA/FEWA/ADDC bill).</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <input type="number" id="electricity" name="electricity" min="0" step="any" value="800"
+                                    placeholder="e.g. 800 kWh" aria-required="true">
+                                <span class="field-error" id="err-electricity" role="alert"></span>
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <label for="people">Number of People in Household</label>
+                                <div class="number" role="group" aria-label="Number of people">
+                                    <button type="button" class="icon minus" aria-label="Decrease number of people">−</button>
+                                    <input type="number" id="people" name="people" min="1" value="1"
+                                        placeholder="e.g. 4" aria-required="true">
+                                    <button type="button" class="icon plus" aria-label="Increase number of people">+</button>
+                                </div>
+                                <span class="field-error" id="err-people" role="alert"></span>
+                            </div>
+                        </div>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label for="chiller">Chiller Consumption (kWh)</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about chiller consumption">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info">
+                                            <p>Enter your chiller's monthly energy consumption (kWh) from your chiller bill.<br>
+                                            <strong>No separate chiller bill? Leave this blank.</strong></p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <input type="number" id="chiller" name="chiller" min="0" step="any" value="0"
+                                    placeholder="Leave blank if not applicable">
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <div class="d_flex label_name">
+                                    <label for="oil">Cooking Oil Usage (litres)</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about cooking oil usage">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info">
+                                            <p>Enter your household's monthly cooking oil consumption in litres. Multiply the number of bottles/cans you use by the volume of each.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="number" role="group" aria-label="Cooking oil litres">
+                                    <button type="button" class="icon minus" aria-label="Decrease oil usage">−</button>
+                                    <input type="number" id="oil" name="oil" min="0" step="any" value="0"
+                                        placeholder="e.g. 2">
+                                    <button type="button" class="icon plus" aria-label="Increase oil usage">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label>Cooking Gas Usage</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about cooking gas">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_2">
+                                            <p><strong>Gas cylinders?</strong> Select 'Cylinders/Month' and enter how many per month (e.g. 0.5 = one every two months).</p>
+                                            <p><strong>Central gas line?</strong> Enter the gas volume (m³) from your gas bill.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="radio-group" role="radiogroup" aria-label="Gas measurement unit">
+                                    <label class="radio-label">
+                                        <input type="radio" name="gasType" value="cylinder" checked onchange="toggleGasInput()">
+                                        Cylinders/Month
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="gasType" value="m3" onchange="toggleGasInput()">
+                                        m³/Month
+                                    </label>
+                                </div>
+                                <div id="gasCylinderGroup">
+                                    <label for="gasCylinder" class="visually-hidden">Gas cylinders used per month</label>
+                                    <input type="number" id="gasCylinder" name="gas" min="0" step="any" value="0"
+                                        placeholder="e.g. 1 (enter 0.5 if used every 2 months)">
+                                </div>
+                                <div id="gasVolumeGroup" style="display:none;">
+                                    <label for="gasVolume" class="visually-hidden">Central gas volume in m³ per month</label>
+                                    <input type="number" id="gasVolume" name="gasVolume" min="0" step="any" value="0"
+                                        placeholder="e.g. 10 m³ from your gas bill">
+                                </div>
+                                <span class="field-error" id="err-gas" role="alert"></span>
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <div class="d_flex label_name">
+                                    <label for="water">Tap Water Consumption</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about water consumption">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_4">
+                                            <p>Enter your household's monthly water consumption in your preferred unit. You can find this on your utility bill.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="radio-group" role="radiogroup" aria-label="Water measurement unit">
+                                    <label class="radio-label">
+                                        <input type="radio" name="tapWaterCons" value="cume" checked>
+                                        Cubic Metres
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="tapWaterCons" value="ltr">
+                                        Litres
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="tapWaterCons" value="imga">
+                                        Imperial Gallons
+                                    </label>
+                                </div>
+                                <input type="number" id="water" name="water" min="0" placeholder="e.g. 20" step="any" value="20" aria-required="true">
+                                <span class="field-error" id="err-water" role="alert"></span>
+                            </div>
+                        </div>
+                    </div><!-- /ENERGY -->
+
+                    <!-- ── SECTION 2: TRANSPORT ── -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            Transport
+                        </h3>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <label for="fuel">Average Weekly Driving Distance</label>
+                                <div class="range-slider distance">
+                                    <input class="range-slider__range" id="fuel" type="range" value="0"
+                                        step="100" min="0" max="1000"
+                                        aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0"
+                                        aria-label="Weekly kilometres driven"
+                                        oninput="updateSliderValue(this.value)">
+                                    <span class="range-slider__value" id="fuelValue" aria-live="polite">0</span>
+                                </div>
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <label for="vehicle">Type of Vehicle</label>
+                                <select id="vehicle" name="vehicle" disabled aria-disabled="true">
+                                    <option value="small">Small car (15–18 kmpl mileage)</option>
+                                    <option value="medium">Medium car (10–12 kmpl mileage)</option>
+                                    <option value="large">Large car / SUV (4–6 kmpl mileage)</option>
+                                    <option value="electric">Electric car (~0.18 kWh/km)</option>
+                                </select>
+                                <span class="vehicle-hint" id="vehicle-hint">Set kilometres above 0 to select vehicle type</span>
+                            </div>
+                        </div>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label for="shortHaul">Short haul flights/year</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about short haul flights">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_4">
+                                            <p>Enter return trips per year from Dubai or the UAE. Under 2 hrs, e.g. GCC countries.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="number" role="group" aria-label="Short haul flights per year">
+                                    <button type="button" class="icon minus" aria-label="Decrease short haul flights">−</button>
+                                    <input type="number" id="shortHaul" name="shortHaul" min="0" value="0" step="1" placeholder="0">
+                                    <button type="button" class="icon plus" aria-label="Increase short haul flights">+</button>
+                                </div>
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <div class="d_flex label_name">
+                                    <label for="mediumHaul">Medium haul flights/year</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about medium haul flights">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_4">
+                                            <p>Enter return trips per year from Dubai or the UAE. 2–4 hrs, e.g. India, Egypt, Turkey.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="number" role="group" aria-label="Medium haul flights per year">
+                                    <button type="button" class="icon minus" aria-label="Decrease medium haul flights">−</button>
+                                    <input type="number" id="mediumHaul" name="mediumHaul" min="0" value="0" step="1" placeholder="0">
+                                    <button type="button" class="icon plus" aria-label="Increase medium haul flights">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label for="longHaul">Long haul flights/year</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about long haul flights">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_4">
+                                            <p>Enter return trips per year from Dubai or the UAE. Over 4 hrs, e.g. UK, Europe, Southeast Asia, Americas.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="number" role="group" aria-label="Long haul flights per year">
+                                    <button type="button" class="icon minus" aria-label="Decrease long haul flights">−</button>
+                                    <input type="number" id="longHaul" name="longHaul" min="0" value="0" step="1" placeholder="0">
+                                    <button type="button" class="icon plus" aria-label="Increase long haul flights">+</button>
+                                </div>
+                            </div>
+                            <!-- Empty half keeps long haul same width as short/medium haul above -->
+                            <div class="field_half mrg_lft" aria-hidden="true"></div>
+                        </div>
+                    </div><!-- /TRANSPORT -->
+
+                    <!-- ── SECTION 3: LIFESTYLE ── -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Lifestyle
+                        </h3>
+
+                        <div class="fields-row">
+                            <div class="field_half mrg_rght">
+                                <div class="d_flex label_name">
+                                    <label for="diet">Food &amp; Diet Pattern</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about dietary habits">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_3">
+                                            <p>Select your diet based on how often you eat meat.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <select id="diet" name="diet" aria-required="true">
+                                    <option value="regular" selected>Meat 2–3 times a week</option>
+                                    <option value="low">Mostly veg, low meat</option>
+                                    <option value="large">Meat 4–5 times a week</option>
+                                    <option value="extralarge">Meat daily</option>
+                                </select>
+                                <span class="field-error" id="err-diet" role="alert"></span>
+                            </div>
+
+                            <div class="field_half mrg_lft">
+                                <div class="d_flex label_name">
+                                    <label for="spend">Monthly Lifestyle Spending</label>
+                                    <div class="tooltip-wrap">
+                                        <button type="button" class="tooltip-btn" aria-label="More information about monthly spending">
+                                            <i aria-hidden="true">i</i>
+                                        </button>
+                                        <span role="tooltip" class="info info_3">
+                                            <p>Monthly goods &amp; services spending in AED. Include shopping, dining, personal care. <strong>Do not include</strong> rent, loans, school fees or utility bills already entered above.</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="range-slider aed_range">
+                                    <input class="range-slider__range" type="range" id="spend" value="0"
+                                        step="1000" min="0" max="12000"
+                                        aria-valuemin="0" aria-valuemax="12000" aria-valuenow="0"
+                                        aria-label="Monthly spending in AED"
+                                        oninput="updateSpendValue(this.value)">
+                                    <span class="range-slider__value" id="spendValue" aria-live="polite">0 AED</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /LIFESTYLE -->
+
+                    <div class="calculate_btn">
+                        <button type="button" id="calculateBtn" onclick="calculateFootprint();">
+                            Calculate My Carbon Footprint
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- ===== RESULT ===== -->
+                <div class="result resultdata" id="result" style="display:none;" aria-live="polite" aria-atomic="true">
+
+                    <h2>Your Carbon Footprint is</h2>
+                    <div class="result-number">
+                        <span id="totalCO2" class="co2-value"> </span>
+                        <span class="co2-unit">tonnes of CO<sub>2</sub>e per year</span>
+                    </div>
+
+                    <!-- Result gauge vs UAE average -->
+                    <div class="result-gauge" aria-label="Carbon footprint comparison">
+                        <div class="gauge-labels">
+                            <span>0t</span>
+                            <span class="gauge-uae-label">UAE avg 22t</span>
+                            <span>44t+</span>
+                        </div>
+                        <div class="gauge-track" role="img" aria-label="Footprint gauge">
+                            <div class="gauge-avg-marker" aria-hidden="true" title="UAE average: 22 tonnes"></div>
+                            <div class="gauge-fill" id="gaugeFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown bars -->
+                    <div class="result-breakdown" id="resultBreakdown" aria-label="Emissions breakdown by category"></div>
+
+                    <div class="result-disclaimer">
+                        <div class="tooltip-wrap">
+                            <button type="button" class="tooltip-btn tooltip-btn--alert" aria-label="Disclaimer about result accuracy">
+                                <i aria-hidden="true">!</i>
+                            </button>
+                            <span role="tooltip" class="info" id="tip-result-note">
+                                <p>Results are estimates based on your inputs and UAE-specific emission factors. Actual carbon footprints may vary.</p>
+                            </span>
+                        </div>
+                        <span class="small_description">This result is an estimate based on the information provided and standard emission factors. Actual emissions may vary depending on supplier, technology, behaviour, and calculation methodology.</span>
+                    </div>
+
+                    <div class="email-report">
+                        <label for="emailid" class="email-label">Send your full report to your inbox:</label>
+                        <input type="email" id="emailid" name="emailid"
+                            placeholder="your@email.com"
+                            autocomplete="email"
+                            aria-describedby="email-error">
+                        <span class="field-error" id="email-error" role="alert"></span>
+                        <div class="calculate_bton">
+                            <button type="button" id="sendReportBtn" class="sharebutton" onclick="shareOnEmail()">
+                                <span class="btn-text">Send Report to My Inbox</span>
+                                <span class="btn-loading" aria-hidden="true" style="display:none;">Sending…</span>
+                            </button>
+                        </div>
+                        <div class="mailtext" id="emailconfirm" aria-live="polite" role="status" style="display:none;"></div>
+                    </div>
+
+                    <div class="recalculate-wrap">
+                        <button type="button" onclick="resetCalculator()" class="recalculate-btn">
+                            &#8635; Recalculate / Start Over
+                        </button>
+                    </div>
+
+                    <div style="text-align:center;margin-top:16px;">
+                        <a href="/assets/CFC_2026_Methodology.pdf" target="_blank" rel="noopener"
+                           style="display:inline-flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:600;color:#a3e635;text-decoration:none;border:1px solid rgba(163,230,53,0.3);border-radius:50px;padding:8px 18px;transition:background 0.2s,border-color 0.2s;"
+                           onmouseover="this.style.background='rgba(163,230,53,0.1)';this.style.borderColor='#a3e635';"
+                           onmouseout="this.style.background='';this.style.borderColor='rgba(163,230,53,0.3)';">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            View Calculation Methodology
+                        </a>
+                    </div>
+
+                    <input type="hidden" id="image_name" name="image_name">
+                    <input type="hidden" id="complete_image_name" name="complete_image_name">
+                    <input type="hidden" id="emailtotalCO2" name="emailtotalCO2">
+                    <input type="hidden" id="co2_electricity" name="co2_electricity">
+                    <input type="hidden" id="co2_chiller" name="co2_chiller">
+                    <input type="hidden" id="co2_gas" name="co2_gas">
+                    <input type="hidden" id="co2_water" name="co2_water">
+                    <input type="hidden" id="co2_oil" name="co2_oil">
+                    <input type="hidden" id="co2_transport" name="co2_transport">
+                    <input type="hidden" id="co2_flights" name="co2_flights">
+                    <input type="hidden" id="co2_diet" name="co2_diet">
+                    <input type="hidden" id="co2_spending" name="co2_spending">
+                </div><!-- /result -->
+
+            </div><!-- /getresult -->
+        </div>
+
+        <div class="result_button" id="result_button" style="display:none;">
+            <input type="hidden" id="social_image_name" name="social_image_name">
+            <input type="hidden" id="social_complete_image_name" name="social_complete_image_name">
+            <div id="theParagraph" class="hidden"></div>
+            <div class="footer">
+                <div class="container">
+                    Powered by <span>Recall</span>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /information -->
+
+    </main>
+
+    <!-- ===== PAGE FOOTER ===== -->
+    <footer class="powerd">
+        <div class="container footer-inner">
+            <p class="footer-copy">Copyright &copy; 2026 All Rights Reserved by <a target="_blank" rel="noopener" href="https://recallearth.ae/">Recall FZCO</a></p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/recall.uae" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.facebook.com/recall.uae" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a href="https://x.com/recalluae" target="_blank" rel="noopener" aria-label="X / Twitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <!-- Single jQuery instance -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Chart.js BEFORE any chart code -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/html2canvas.min.js"></script>
+
+    <script>
+    console.log('Script loaded - calculator ready');
+
+    // ── Gas input toggle (two separate fields per methodology) ──
+    function toggleGasInput() {
+        var mode = document.querySelector('input[name="gasType"]:checked').value;
+        document.getElementById('gasCylinderGroup').style.display = mode === 'cylinder' ? 'block' : 'none';
+        document.getElementById('gasVolumeGroup').style.display   = mode === 'm3'       ? 'block' : 'none';
+        document.getElementById('err-gas').textContent = '';
     }
 
-    // Attach click handler
-    document.getElementById("calculateBtn").addEventListener("click", calculateCarbonFootprint);
+    // ── Slider helpers ──
+    function updateSliderValue(value) {
+        document.getElementById('fuelValue').innerText = value + ' km';
+        document.getElementById('fuel').setAttribute('aria-valuenow', value);
+    }
+    function updateSpendValue(value) {
+        document.getElementById('spendValue').innerText = value + ' AED';
+        document.getElementById('spend').setAttribute('aria-valuenow', value);
+    }
 
-    console.log("✅ Calculator loaded successfully");
-  </script>
+    // ── Vehicle enable/disable based on km slider ──
+    $(document).ready(function () {
+        $('#vehicle').attr('disabled', true);
+        $('#fuel').on('input change', function () {
+            if (parseInt(this.value) > 0) {
+                $('#vehicle').removeAttr('disabled').attr('aria-disabled', 'false');
+                $('#vehicle-hint').style && ($('#vehicle-hint').hide());
+                document.getElementById('vehicle-hint').style.display = 'none';
+            } else {
+                $('#vehicle').attr('disabled', true).attr('aria-disabled', 'true');
+                document.getElementById('vehicle-hint').style.display = 'block';
+            }
+        });
+    });
+
+    // ── +/- stepper buttons ──
+    $(document).ready(function () {
+        $('.minus').on('click', function () {
+            var input = $(this).siblings('input[type="number"]');
+            var val = parseInt(input.val()) || 0;
+            var min = parseInt(input.attr('min')) || 0;
+            if (val > min) input.val(val - 1).trigger('change');
+        });
+        $('.plus').on('click', function () {
+            var input = $(this).siblings('input[type="number"]');
+            var val = parseInt(input.val()) || 0;
+            input.val(val + 1).trigger('change');
+        });
+    });
+
+    // ── Tooltip toggle (mobile tap support) ──
+    document.addEventListener('DOMContentLoaded', function () {
+        var allWraps = document.querySelectorAll('.tooltip-wrap');
+        allWraps.forEach(function (wrap) {
+            var btn = wrap.querySelector('.tooltip-btn');
+            if (!btn) return;
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var isOpen = wrap.classList.contains('open');
+                // Close all open tooltips
+                allWraps.forEach(function (w) { w.classList.remove('open'); });
+                if (!isOpen) wrap.classList.add('open');
+            });
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    wrap.classList.remove('open');
+                    btn.focus();
+                }
+            });
+        });
+        // Close on outside click
+        document.addEventListener('click', function () {
+            allWraps.forEach(function (w) { w.classList.remove('open'); });
+        });
+    });
+
+    // ── Inline form validation ──
+    function clearErrors() {
+        document.querySelectorAll('.field-error').forEach(function (el) { el.textContent = ''; });
+        var banner = document.getElementById('form-error-banner');
+        banner.style.display = 'none';
+        banner.textContent = '';
+    }
+    function setError(fieldId, message) {
+        var errEl = document.getElementById('err-' + fieldId);
+        if (errEl) errEl.textContent = message;
+    }
+    function showBanner(message) {
+        var banner = document.getElementById('form-error-banner');
+        banner.textContent = message;
+        banner.style.display = 'block';
+    }
+
+    // ── Main calculation ──
+    function calculateFootprint() {
+        console.log('Calculate button clicked!');
+        clearErrors();
+
+        var isValid = true;
+
+        var electricityEl = document.getElementById('electricity');
+        var peopleEl      = document.getElementById('people');
+        var waterEl       = document.getElementById('water');
+        var dietEl        = document.getElementById('diet');
+
+        var electricity = parseFloat(electricityEl.value);
+        var people      = parseInt(peopleEl.value);
+        var waterQty    = parseFloat(waterEl.value);
+        var diet        = dietEl.value;
+
+        // Gas: read from the active field (optional - blank treated as 0)
+        var gasType = document.querySelector('input[name="gasType"]:checked').value;
+        var gasActiveId = gasType === 'cylinder' ? 'gasCylinder' : 'gasVolume';
+        var gas = parseFloat(document.getElementById(gasActiveId).value) || 0;
+
+        if (isNaN(electricity) || electricity < 0) {
+            setError('electricity', 'Please enter your monthly electricity usage.');
+            isValid = false;
+        }
+        if (isNaN(people) || people < 1) {
+            setError('people', 'Please enter at least 1 person.');
+            isValid = false;
+        }
+        if (isNaN(waterQty) || waterQty < 0) {
+            setError('water', 'Please enter your monthly water consumption.');
+            isValid = false;
+        }
+        if (!diet) {
+            setError('diet', 'Please select your food &amp; diet pattern.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            showBanner('Please fill in the required fields highlighted below.');
+            // Scroll to first error
+            var firstErr = document.querySelector('.field-error:not(:empty)');
+            if (firstErr) {
+                firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstErr.previousElementSibling && firstErr.previousElementSibling.focus();
+            }
+            return;
+        }
+
+        // ── Emission factors - CFC 2026 Methodology ──
+        // Source: DEWA 2024 carbon intensity, EPA, UAE-specific estimates
+        var ef = {
+            electricity:  0.4045,   // kg CO₂e/kWh (DEWA 2024)
+            gasCylinder:  46,       // kg CO₂/cylinder
+            gasM3:        1.94,     // kg CO₂/m³ central gas (EPA)
+            oilDensity:   0.92,     // kg/L cooking oil
+            oilFactor:    2.6,      // kg CO₂/kg cooking oil
+            water:        2.988,    // kg CO₂/m³ (UAE desalination estimate)
+            smallCar:     0.179,    // kg CO₂e/km
+            mediumCar:    0.268,
+            largeCar:     0.572,
+            electricCar:  0.073,    // kg CO₂e/km (0.18 kWh/km × 0.4045)
+            shortHaul:    500,      // kg CO₂e per return trip
+            mediumHaul:   1000,
+            longHaul:     2500,
+            spending:     50        // kg CO₂e per AED 1,000/month
+        };
+
+        // ── Parse inputs ──
+        var chiller     = parseFloat(document.getElementById('chiller').value) || 0;
+        var oil         = parseFloat(document.getElementById('oil').value) || 0;
+        var waterUnit   = document.querySelector('input[name="tapWaterCons"]:checked').value;
+        // gas & gasType already parsed during validation above
+        var weeklyKm    = parseFloat(document.getElementById('fuel').value) || 0;
+        var vehicleType = document.getElementById('vehicle').value;
+        var shortHaul   = parseInt(document.getElementById('shortHaul').value) || 0;
+        var mediumHaul  = parseInt(document.getElementById('mediumHaul').value) || 0;
+        var longHaul    = parseInt(document.getElementById('longHaul').value) || 0;
+        var totalSpend  = parseFloat(document.getElementById('spend').value) || 0;
+
+        // ── Per-person annual figures (all in kg CO₂e) ──
+        // Electricity: (monthly kWh ÷ people) × 12 × 0.4045
+        var elecCO2    = (electricity / people) * 12 * ef.electricity;
+        // Chiller: same factor as electricity (entered as kWh)
+        var chillerCO2 = (chiller / people) * 12 * ef.electricity;
+        // Cooking oil: (monthly litres × 0.92 × 2.6 × 12) ÷ people
+        var oilCO2     = (oil * ef.oilDensity * ef.oilFactor * 12) / people;
+
+        // Water: convert to m³ first
+        var waterM3;
+        if (waterUnit === 'cume') {
+            waterM3 = waterQty;
+        } else if (waterUnit === 'ltr') {
+            waterM3 = waterQty / 1000;
+        } else { // imperial gallons
+            waterM3 = waterQty * 0.00454609;
+        }
+        var waterCO2 = (waterM3 * ef.water * 12) / people;
+
+        // Gas
+        var gasCO2;
+        if (gasType === 'cylinder') {
+            gasCO2 = (gas * ef.gasCylinder * 12) / people;
+        } else { // m³ central gas
+            gasCO2 = (gas * ef.gasM3 * 12) / people;
+        }
+
+        // Vehicle (not divided by household - individual choice)
+        var vehicleFactors = { small: ef.smallCar, medium: ef.mediumCar, large: ef.largeCar, electric: ef.electricCar };
+        var fuelEF     = vehicleFactors[vehicleType] || ef.smallCar;
+        var vehicleCO2 = weeklyKm > 0 ? weeklyKm * fuelEF * 52 : 0;
+
+        // Flights (not divided by household)
+        var flightsCO2 = (shortHaul * ef.shortHaul) + (mediumHaul * ef.mediumHaul) + (longHaul * ef.longHaul);
+
+        // Diet - fixed annual values per methodology (kg/year)
+        var dietMap = { low: 5100, regular: 5300, large: 7600, extralarge: 10000, medium: 5300 };
+        var dietCO2 = dietMap[diet] || 5100;
+
+        // Lifestyle spending (not divided by household)
+        var spendCO2 = (totalSpend / 1000) * ef.spending * 12;
+
+        // Total in tonnes of CO₂e
+        var totalCO2 = (elecCO2 + chillerCO2 + oilCO2 + waterCO2 + gasCO2 + vehicleCO2 + flightsCO2 + dietCO2 + spendCO2) / 1000;
+
+        // ── Store results for display & email ──
+        document.getElementById('emailtotalCO2').value    = totalCO2.toFixed(2);
+        document.getElementById('co2_electricity').value  = (elecCO2    / 1000).toFixed(3);
+        document.getElementById('co2_chiller').value      = (chillerCO2 / 1000).toFixed(3);
+        document.getElementById('co2_gas').value          = (gasCO2     / 1000).toFixed(3);
+        document.getElementById('co2_water').value        = (waterCO2   / 1000).toFixed(3);
+        document.getElementById('co2_oil').value          = (oilCO2     / 1000).toFixed(3);
+        document.getElementById('co2_transport').value    = (vehicleCO2 / 1000).toFixed(3);
+        document.getElementById('co2_flights').value      = (flightsCO2 / 1000).toFixed(3);
+        document.getElementById('co2_diet').value         = (dietCO2    / 1000).toFixed(3);
+        document.getElementById('co2_spending').value     = (spendCO2   / 1000).toFixed(3);
+
+        // Gauge (max scale = 44t for visual)
+        var gaugeEl = document.getElementById('gaugeFill');
+        var pct     = Math.min((totalCO2 / 44) * 100, 100);
+        gaugeEl.style.width = pct + '%';
+        gaugeEl.style.background = totalCO2 <= 10 ? '#22c55e' : totalCO2 <= 22 ? '#f59e0b' : '#ef4444';
+
+        var msgEl = document.getElementById('gaugeMessage');
+        if (totalCO2 < 15) {
+            msgEl.textContent = 'Great work! Your footprint is below the UAE average.';
+            msgEl.className = 'gauge-message gauge-message--good';
+        } else if (totalCO2 <= 22) {
+            msgEl.textContent = 'You\'re at or near the UAE average. Small changes can make a big difference.';
+            msgEl.className = 'gauge-message gauge-message--mid';
+        } else {
+            msgEl.textContent = 'Your footprint is above the UAE average. Consider the tips below.';
+            msgEl.className = 'gauge-message gauge-message--high';
+        }
+
+        // Breakdown bars - all 9 categories per methodology
+        var breakdown = [
+            { label: 'Electricity',  value: elecCO2    / 1000 },
+            { label: 'Chiller',      value: chillerCO2 / 1000 },
+            { label: 'Cooking Gas',  value: gasCO2     / 1000 },
+            { label: 'Cooking Oil',  value: oilCO2     / 1000 },
+            { label: 'Water',        value: waterCO2   / 1000 },
+            { label: 'Transport',    value: vehicleCO2 / 1000 },
+            { label: 'Flights',      value: flightsCO2 / 1000 },
+            { label: 'Food & Diet',  value: dietCO2    / 1000 },
+            { label: 'Spending',     value: spendCO2   / 1000 }
+        ];
+        var bdContainer = document.getElementById('resultBreakdown');
+        bdContainer.innerHTML = '';
+        breakdown.forEach(function (item) {
+            var itemPct = totalCO2 > 0 ? Math.min((item.value / totalCO2) * 100, 100) : 0;
+            var div = document.createElement('div');
+            div.className = 'breakdown-item';
+            div.innerHTML =
+                '<span class="breakdown-label">' + item.label + '</span>' +
+                '<div class="breakdown-bar-track" aria-hidden="true">' +
+                '  <div class="breakdown-bar-fill" style="width:' + itemPct.toFixed(1) + '%"></div>' +
+                '</div>' +
+                '<span class="breakdown-value">' + item.value.toFixed(2) + 't</span>';
+            bdContainer.appendChild(div);
+        });
+
+        // Show result + scroll
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result_button').style.display = 'block';
+
+        setTimeout(function () {
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Fire animated counter after scroll lands (~600ms)
+            setTimeout(function () {
+                animateCounter(document.getElementById('totalCO2'), totalCO2, 1600);
+            }, 600);
+        }, 100);
+
+        // Screenshot for email
+        changeToImg();
+    }
+
+    // ── Screenshot capture ──
+    function saveScreenshot(canvas) {
+        var fileName = 'image';
+        var link = document.createElement('a');
+        link.download = fileName + '.png';
+        canvas.toBlob(function (blob) {
+            link.href = URL.createObjectURL(blob);
+        });
+    }
+
+    function changeToImg() {
+        // Simplified screenshot function - errors fail silently
+        try {
+            var toImgArea = document.getElementById('result');
+            if (!toImgArea) return;
+
+            html2canvas(toImgArea, { allowTaint: true, taintTest: false }).then(function (canvas) {
+                var screenshotData = canvas.toDataURL('image/jpeg');
+                fetch('screenshot_create.php', {
+                    method: 'POST',
+                    body: 'screenshot_data=' + encodeURIComponent(screenshotData)
+                }).catch(function () {});
+            }).catch(function () {});
+        } catch (e) {}
+    }
+
+    // ── Email report ──
+    function shareOnEmail() {
+        var btn        = document.getElementById('sendReportBtn');
+        var btnText    = btn.querySelector('.btn-text');
+        var btnLoading = btn.querySelector('.btn-loading');
+        var emailInput = document.getElementById('emailid');
+        var errEl      = document.getElementById('email-error');
+        var email      = emailInput.value.trim();
+        var emailRe    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        errEl.textContent = '';
+
+        if (!email) {
+            errEl.textContent = 'Please enter your email address.';
+            emailInput.focus();
+            return;
+        }
+        if (!emailRe.test(email)) {
+            errEl.textContent = 'Please enter a valid email address.';
+            emailInput.focus();
+            return;
+        }
+
+        // Loading state
+        btn.disabled       = true;
+        btnText.style.display   = 'none';
+        btnLoading.style.display = 'inline';
+
+        var data = new FormData();
+        data.set('email',         email);
+        data.set('image',         document.getElementById('complete_image_name').value);
+        data.set('weeklyKm',      document.getElementById('fuel').value);
+        data.set('vehicleType',   document.getElementById('vehicle').value);
+        data.set('shortHaul',     document.getElementById('shortHaul').value);
+        data.set('mediumHaul',    document.getElementById('mediumHaul').value);
+        data.set('longHaul',      document.getElementById('longHaul').value);
+        data.set('people',        document.getElementById('people').value);
+        data.set('electricity',   document.getElementById('electricity').value);
+        data.set('oil',           document.getElementById('oil').value);
+        var _gasType = document.querySelector('input[name="gasType"]:checked').value;
+        var _gasVal  = _gasType === 'cylinder'
+            ? document.getElementById('gasCylinder').value
+            : document.getElementById('gasVolume').value;
+        data.set('gas',     _gasVal);
+        data.set('gasType', _gasType);
+        data.set('waterQuantity', document.getElementById('water').value);
+        data.set('water',         document.querySelector('input[name="tapWaterCons"]:checked').value);
+        data.set('dailyDiet',     document.getElementById('diet').value);
+        data.set('totalSpend',    document.getElementById('spend').value);
+        data.set('chiller',       document.getElementById('chiller').value || 0);
+        data.set('emailtotalCO2', document.getElementById('emailtotalCO2').value);
+        data.set('co2_electricity', document.getElementById('co2_electricity').value || 0);
+        data.set('co2_chiller',    document.getElementById('co2_chiller').value || 0);
+        data.set('co2_gas',        document.getElementById('co2_gas').value || 0);
+        data.set('co2_water',      document.getElementById('co2_water').value || 0);
+        data.set('co2_oil',        document.getElementById('co2_oil').value || 0);
+        data.set('co2_transport',  document.getElementById('co2_transport').value || 0);
+        data.set('co2_flights',    document.getElementById('co2_flights').value || 0);
+        data.set('co2_diet',       document.getElementById('co2_diet').value || 0);
+        data.set('co2_spending',   document.getElementById('co2_spending').value || 0);
+
+        fetch('mail.php', { method: 'POST', body: data })
+            .then(function (r) { return r.json(); })
+            .then(function (resp) {
+                var confirmEl = document.getElementById('emailconfirm');
+                if (resp.status === 'success') {
+                    confirmEl.textContent  = 'Report sent! Check your inbox (and spam folder).';
+                    confirmEl.className    = 'mailtext confirm-success';
+                } else {
+                    confirmEl.textContent  = 'Something went wrong. Please try again.';
+                    confirmEl.className    = 'mailtext confirm-error';
+                }
+                confirmEl.style.display = 'block';
+                setTimeout(function () { confirmEl.style.display = 'none'; }, 5000);
+            })
+            .catch(function () {
+                var confirmEl = document.getElementById('emailconfirm');
+                confirmEl.textContent  = 'Could not send report. Please try again later.';
+                confirmEl.className    = 'mailtext confirm-error';
+                confirmEl.style.display = 'block';
+                setTimeout(function () { confirmEl.style.display = 'none'; }, 5000);
+            })
+            .finally(function () {
+                btn.disabled            = false;
+                btnText.style.display   = 'inline';
+                btnLoading.style.display = 'none';
+            });
+    }
+
+    // ── Sticky nav on scroll ──
+    (function () {
+        var stickyNav = document.getElementById('sticky-nav');
+        var hero = document.getElementById('banner');
+        if (!stickyNav || !hero) return;
+        function onScroll() {
+            if (window.scrollY > hero.offsetHeight * 0.75) {
+                stickyNav.classList.add('visible');
+            } else {
+                stickyNav.classList.remove('visible');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    // ── Scroll entry animations (IntersectionObserver) ──
+    (function () {
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // If reduced motion is preferred, show all elements immediately
+        if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+            document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
+                el.classList.add('visible');
+            });
+            return;
+        }
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
+            observer.observe(el);
+        });
+    })();
+
+    // ── Animated counter ──
+    function animateCounter(el, targetValue, duration) {
+        var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) {
+            el.textContent = targetValue.toFixed(2);
+            return;
+        }
+        var startTime = null;
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            var current  = targetValue * easeOutCubic(progress);
+            el.textContent = current.toFixed(2);
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = targetValue.toFixed(2);
+        }
+        el.textContent = '0.00';
+        requestAnimationFrame(step);
+    }
+
+    // ── Form progress stepper ──
+    // DISABLED: Elements don't exist in HTML, causing null reference errors
+    // (function () {
+    //     var formSections = document.querySelectorAll('.form-section');
+    //     var stepEls  = [
+    //         document.getElementById('step-energy'),
+    //         document.getElementById('step-transport'),
+    //         document.getElementById('step-lifestyle')
+    //     ];
+    //     var lineEls = [
+    //         document.getElementById('line-1'),
+    //         document.getElementById('line-2')
+    //     ];
+
+    //     function setStep(activeIndex) {
+    //         stepEls.forEach(function (s, i) {
+    //             if (s) {
+    //                 s.classList.remove('active', 'done');
+    //                 if (i < activeIndex)      s.classList.add('done');
+    //                 else if (i === activeIndex) s.classList.add('active');
+    //             }
+    //         });
+    //         lineEls.forEach(function (l, i) {
+    //             if (l) {
+    //                 l.classList.toggle('done', i < activeIndex);
+    //             }
+    //         });
+    //     }
+    //     setStep(0);
+    //     if (!('IntersectionObserver' in window) || formSections.length < 3) return;
+    //     var observer = new IntersectionObserver(function (entries) {
+    //         entries.forEach(function (entry) {
+    //             if (!entry.isIntersecting) return;
+    //             var idx = Array.prototype.indexOf.call(formSections, entry.target);
+    //             if (idx >= 0) setStep(idx);
+    //         });
+    //     }, { threshold: 0.35, rootMargin: '0px 0px -40% 0px' });
+    //     formSections.forEach(function (s) { observer.observe(s); });
+    // })();
+
+    // ── Social sharing ──
+    var shareText = 'I just calculated my carbon footprint using the UAE Carbon Footprint Calculator!';
+
+    function shareOnFacebook() {
+        var imgName = document.getElementById('social_image_name').value;
+        var link    = 'https://mycarbonfootprint.ae/Screenshots/' + imgName;
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(link) + '&t=' + encodeURIComponent(shareText), '_blank');
+    }
+    function shareOnTwitter() {
+        var imgName = document.getElementById('social_image_name').value;
+        var link    = 'https://mycarbonfootprint.ae/Screenshots/' + imgName;
+        window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(shareText), '_blank');
+    }
+    function shareOnWhatsApp() {
+        window.open('https://wa.me/?text=' + encodeURIComponent(shareText + '\nhttps://mycarbonfootprint.ae'), '_blank');
+    }
+    function shareOnLinkedin() {
+        var imgName = document.getElementById('social_image_name').value;
+        var link    = 'https://mycarbonfootprint.ae/Screenshots/' + imgName;
+        window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link), '_blank');
+    }
+
+    // ── Reset / Recalculate ──
+    function resetCalculator() {
+        document.getElementById('footprintForm').reset();
+        document.getElementById('result').style.display = 'none';
+        document.getElementById('result_button').style.display = 'none';
+        document.getElementById('fuelValue').innerText = '0 km';
+        document.getElementById('spendValue').innerText = '0 AED';
+        document.getElementById('vehicle').disabled = true;
+        document.getElementById('vehicle-hint').style.display = 'block';
+        // Reset gas toggle back to cylinder (default)
+        toggleGasInput();
+        window.scrollTo({ top: document.getElementById('calculate_form').offsetTop - 60, behavior: 'smooth' });
+    }
+    </script>
+
+
 </body>
 </html>
