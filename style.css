@@ -265,6 +265,16 @@ a:focus-visible {
     color: rgba(255,255,255,0.72);
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
+    padding-right: 20px;
+    position: relative;
+}
+.hero-trust__item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    height: 16px;
+    width: 1px;
+    background: rgba(255,255,255,0.25);
 }
 .hero-trust__item svg {
     width: 14px;
