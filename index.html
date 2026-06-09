@@ -552,6 +552,8 @@
     <script src="js/html2canvas.min.js"></script>
 
     <script>
+    console.log('Script loaded - calculator ready');
+
     // ── Gas input toggle (two separate fields per methodology) ──
     function toggleGasInput() {
         var mode = document.querySelector('input[name="gasType"]:checked').value;
@@ -645,6 +647,7 @@
 
     // ── Main calculation ──
     function calculateFootprint() {
+        console.log('Calculate button clicked!');
         clearErrors();
 
         var isValid = true;
