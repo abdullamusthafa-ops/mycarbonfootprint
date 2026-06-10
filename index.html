@@ -652,6 +652,7 @@
             clearErrors();
 
         var isValid = true;
+        var errors = [];
 
         var electricityEl = document.getElementById('electricity');
         var peopleEl      = document.getElementById('people');
@@ -668,33 +669,55 @@
         var gasActiveId = gasType === 'cylinder' ? 'gasCylinder' : 'gasVolume';
         var gas = parseFloat(document.getElementById(gasActiveId).value) || 0;
 
-        if (isNaN(electricity) || electricity < 0) {
-            setError('electricity', 'Please enter your monthly electricity usage.');
+        // VALIDATION - Check mandatory fields
+        console.log('🔍 Validating fields...');
+
+        // Electricity is mandatory
+        if (!electricityEl.value || electricityEl.value.trim() === '' || isNaN(electricity) || electricity < 0) {
+            setError('electricity', '⚠️ REQUIRED: Enter monthly electricity usage (kWh)');
+            errors.push('Monthly Electricity Usage');
             isValid = false;
         }
-        if (isNaN(people) || people < 1) {
-            setError('people', 'Please enter at least 1 person.');
+
+        // People count is mandatory
+        if (!peopleEl.value || peopleEl.value.trim() === '' || isNaN(people) || people < 1) {
+            setError('people', '⚠️ REQUIRED: Enter at least 1 person');
+            errors.push('Number of People');
             isValid = false;
         }
-        if (isNaN(waterQty) || waterQty < 0) {
-            setError('water', 'Please enter your monthly water consumption.');
+
+        // Water is mandatory
+        if (!waterEl.value || waterEl.value.trim() === '' || isNaN(waterQty) || waterQty < 0) {
+            setError('water', '⚠️ REQUIRED: Enter monthly water consumption');
+            errors.push('Water Consumption');
             isValid = false;
         }
-        if (!diet) {
-            setError('diet', 'Please select your food &amp; diet pattern.');
+
+        // Diet is mandatory
+        if (!diet || diet.trim() === '') {
+            setError('diet', '⚠️ REQUIRED: Select your food & diet pattern');
+            errors.push('Food & Diet Pattern');
             isValid = false;
         }
 
         if (!isValid) {
-            showBanner('Please fill in the required fields highlighted below.');
+            var errorList = errors.join(', ');
+            var bannerMessage = '❌ Please fill in these mandatory fields: ' + errorList;
+            console.warn(bannerMessage);
+            showBanner(bannerMessage);
             // Scroll to first error
             var firstErr = document.querySelector('.field-error:not(:empty)');
             if (firstErr) {
-                firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstErr.previousElementSibling && firstErr.previousElementSibling.focus();
+                setTimeout(function() {
+                    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    var inputEl = firstErr.previousElementSibling;
+                    if (inputEl) inputEl.focus();
+                }, 100);
             }
             return;
         }
+
+        console.log('✅ All mandatory fields validated successfully');
 
         console.log('✅ Validation passed. Inputs:', {electricity, people, waterQty, diet, gas, gasType});
 
