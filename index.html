@@ -647,8 +647,9 @@
 
     // ── Main calculation ──
     function calculateFootprint() {
-        console.log('Calculate button clicked!');
-        clearErrors();
+        try {
+            console.log('✅ Calculate button clicked!');
+            clearErrors();
 
         var isValid = true;
 
@@ -694,6 +695,8 @@
             }
             return;
         }
+
+        console.log('✅ Validation passed. Inputs:', {electricity, people, waterQty, diet, gas, gasType});
 
         // ── Emission factors - CFC 2026 Methodology ──
         // Source: DEWA 2024 carbon intensity, EPA, UAE-specific estimates
@@ -771,6 +774,9 @@
         // Total in tonnes of CO₂e
         var totalCO2 = (elecCO2 + chillerCO2 + oilCO2 + waterCO2 + gasCO2 + vehicleCO2 + flightsCO2 + dietCO2 + spendCO2) / 1000;
 
+        console.log('✅ Calculated total CO2:', totalCO2.toFixed(2), 'tonnes');
+        console.log('Breakdown:', {elecCO2, chillerCO2, oilCO2, waterCO2, gasCO2, vehicleCO2, flightsCO2, dietCO2, spendCO2});
+
         // ── Store results for display & email ──
         document.getElementById('emailtotalCO2').value    = totalCO2.toFixed(2);
         document.getElementById('co2_electricity').value  = (elecCO2    / 1000).toFixed(3);
@@ -829,8 +835,21 @@
         });
 
         // Show result + scroll
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('result_button').style.display = 'block';
+        console.log('✅ Displaying results...');
+        var resultEl = document.getElementById('result');
+        var resultBtnEl = document.getElementById('result_button');
+
+        if (resultEl) {
+            resultEl.style.display = 'block';
+            console.log('✅ Result element displayed');
+        } else {
+            console.error('❌ Result element not found!');
+        }
+
+        if (resultBtnEl) {
+            resultBtnEl.style.display = 'block';
+            console.log('✅ Result button displayed');
+        }
 
         setTimeout(function () {
             document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -840,8 +859,14 @@
             }, 600);
         }, 100);
 
-        // Screenshot for email
-        changeToImg();
+            // Screenshot for email
+            changeToImg();
+            console.log('✅ Calculation complete and results displayed');
+        } catch (error) {
+            console.error('❌ ERROR in calculateFootprint:', error);
+            console.error('Stack:', error.stack);
+            showBanner('Error calculating footprint: ' + error.message + '. Check console for details.');
+        }
     }
 
     // ── Screenshot capture ──
