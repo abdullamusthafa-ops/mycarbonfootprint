@@ -777,34 +777,56 @@
         console.log('✅ Calculated total CO2:', totalCO2.toFixed(2), 'tonnes');
         console.log('Breakdown:', {elecCO2, chillerCO2, oilCO2, waterCO2, gasCO2, vehicleCO2, flightsCO2, dietCO2, spendCO2});
 
+        // Display total CO2 value
+        var totalCO2El = document.getElementById('totalCO2');
+        if (totalCO2El) {
+            totalCO2El.textContent = totalCO2.toFixed(2);
+        } else {
+            console.warn('⚠️ totalCO2 element not found');
+        }
+
         // ── Store results for display & email ──
-        document.getElementById('emailtotalCO2').value    = totalCO2.toFixed(2);
-        document.getElementById('co2_electricity').value  = (elecCO2    / 1000).toFixed(3);
-        document.getElementById('co2_chiller').value      = (chillerCO2 / 1000).toFixed(3);
-        document.getElementById('co2_gas').value          = (gasCO2     / 1000).toFixed(3);
-        document.getElementById('co2_water').value        = (waterCO2   / 1000).toFixed(3);
-        document.getElementById('co2_oil').value          = (oilCO2     / 1000).toFixed(3);
-        document.getElementById('co2_transport').value    = (vehicleCO2 / 1000).toFixed(3);
-        document.getElementById('co2_flights').value      = (flightsCO2 / 1000).toFixed(3);
-        document.getElementById('co2_diet').value         = (dietCO2    / 1000).toFixed(3);
-        document.getElementById('co2_spending').value     = (spendCO2   / 1000).toFixed(3);
+        var setIfExists = function(id, value) {
+            var el = document.getElementById(id);
+            if (el) el.value = value;
+            else console.warn('⚠️ Element not found: ' + id);
+        };
+
+        setIfExists('emailtotalCO2', totalCO2.toFixed(2));
+        setIfExists('co2_electricity', (elecCO2 / 1000).toFixed(3));
+        setIfExists('co2_chiller', (chillerCO2 / 1000).toFixed(3));
+        setIfExists('co2_gas', (gasCO2 / 1000).toFixed(3));
+        setIfExists('co2_water', (waterCO2 / 1000).toFixed(3));
+        setIfExists('co2_oil', (oilCO2 / 1000).toFixed(3));
+        setIfExists('co2_transport', (vehicleCO2 / 1000).toFixed(3));
+        setIfExists('co2_flights', (flightsCO2 / 1000).toFixed(3));
+        setIfExists('co2_diet', (dietCO2 / 1000).toFixed(3));
+        setIfExists('co2_spending', (spendCO2 / 1000).toFixed(3));
 
         // Gauge (max scale = 44t for visual)
         var gaugeEl = document.getElementById('gaugeFill');
-        var pct     = Math.min((totalCO2 / 44) * 100, 100);
-        gaugeEl.style.width = pct + '%';
-        gaugeEl.style.background = totalCO2 <= 10 ? '#22c55e' : totalCO2 <= 22 ? '#f59e0b' : '#ef4444';
+        if (gaugeEl) {
+            var pct     = Math.min((totalCO2 / 44) * 100, 100);
+            gaugeEl.style.width = pct + '%';
+            gaugeEl.style.background = totalCO2 <= 10 ? '#22c55e' : totalCO2 <= 22 ? '#f59e0b' : '#ef4444';
+        } else {
+            console.warn('⚠️ gaugeFill element not found, skipping gauge display');
+        }
 
         var msgEl = document.getElementById('gaugeMessage');
-        if (totalCO2 < 15) {
-            msgEl.textContent = 'Great work! Your footprint is below the UAE average.';
-            msgEl.className = 'gauge-message gauge-message--good';
-        } else if (totalCO2 <= 22) {
-            msgEl.textContent = 'You\'re at or near the UAE average. Small changes can make a big difference.';
-            msgEl.className = 'gauge-message gauge-message--mid';
+        if (msgEl) {
+            if (totalCO2 < 15) {
+                msgEl.textContent = 'Great work! Your footprint is below the UAE average.';
+                msgEl.className = 'gauge-message gauge-message--good';
+            } else if (totalCO2 <= 22) {
+                msgEl.textContent = 'You\'re at or near the UAE average. Small changes can make a big difference.';
+                msgEl.className = 'gauge-message gauge-message--mid';
+            } else {
+                msgEl.textContent = 'Your footprint is above the UAE average. Consider the tips below.';
+                msgEl.className = 'gauge-message gauge-message--high';
+            }
         } else {
-            msgEl.textContent = 'Your footprint is above the UAE average. Consider the tips below.';
-            msgEl.className = 'gauge-message gauge-message--high';
+            console.warn('⚠️ gaugeMessage element not found, skipping message display');
         }
 
         // Breakdown bars - all 9 categories per methodology
@@ -820,19 +842,24 @@
             { label: 'Spending',     value: spendCO2   / 1000 }
         ];
         var bdContainer = document.getElementById('resultBreakdown');
-        bdContainer.innerHTML = '';
-        breakdown.forEach(function (item) {
-            var itemPct = totalCO2 > 0 ? Math.min((item.value / totalCO2) * 100, 100) : 0;
-            var div = document.createElement('div');
-            div.className = 'breakdown-item';
-            div.innerHTML =
-                '<span class="breakdown-label">' + item.label + '</span>' +
-                '<div class="breakdown-bar-track" aria-hidden="true">' +
-                '  <div class="breakdown-bar-fill" style="width:' + itemPct.toFixed(1) + '%"></div>' +
-                '</div>' +
-                '<span class="breakdown-value">' + item.value.toFixed(2) + 't</span>';
-            bdContainer.appendChild(div);
-        });
+        if (bdContainer) {
+            bdContainer.innerHTML = '';
+            breakdown.forEach(function (item) {
+                var itemPct = totalCO2 > 0 ? Math.min((item.value / totalCO2) * 100, 100) : 0;
+                var div = document.createElement('div');
+                div.className = 'breakdown-item';
+                div.innerHTML =
+                    '<span class="breakdown-label">' + item.label + '</span>' +
+                    '<div class="breakdown-bar-track" aria-hidden="true">' +
+                    '  <div class="breakdown-bar-fill" style="width:' + itemPct.toFixed(1) + '%"></div>' +
+                    '</div>' +
+                    '<span class="breakdown-value">' + item.value.toFixed(2) + 't</span>';
+                bdContainer.appendChild(div);
+            });
+            console.log('✅ Breakdown displayed with ' + breakdown.length + ' items');
+        } else {
+            console.warn('⚠️ resultBreakdown element not found');
+        }
 
         // Show result + scroll
         console.log('✅ Displaying results...');
