@@ -44,6 +44,13 @@ try {
         exit;
     }
 
+    // DNS MX check — reject domains with no mail server (major cause of bounces)
+    $emailDomain = substr(strrchr($email, '@'), 1);
+    if (!checkdnsrr($emailDomain, 'MX') && !checkdnsrr($emailDomain, 'A')) {
+        echo json_encode(['status' => 'error', 'message' => 'Email domain does not exist. Please check your email address.']);
+        exit;
+    }
+
     // ── Label helpers ──
     $gasTypeRaw = $_POST['gasType'] ?? 'cylinder';
     $gasLabel   = $gasTypeRaw === 'm3' ? 'm³/Month' : 'Cylinders/Month';

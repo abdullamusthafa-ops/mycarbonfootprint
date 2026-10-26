@@ -952,8 +952,11 @@
         var btnLoading = btn.querySelector('.btn-loading');
         var emailInput = document.getElementById('emailid');
         var errEl      = document.getElementById('email-error');
-        var email      = emailInput.value.trim();
-        var emailRe    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var email      = emailInput.value.trim().toLowerCase();
+        // RFC-5322 simplified + require real TLD (2-6 chars)
+        var emailRe    = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}$/;
+        // Block obviously fake local-parts
+        var fakeRe     = /^(test|fake|asdf|qwerty|example|noemail|noreply|abc123|xxxxx|aaaaa|1234|none|null|no|na)@/i;
 
         errEl.textContent = '';
 
@@ -962,7 +965,7 @@
             emailInput.focus();
             return;
         }
-        if (!emailRe.test(email)) {
+        if (!emailRe.test(email) || fakeRe.test(email)) {
             errEl.textContent = 'Please enter a valid email address.';
             emailInput.focus();
             return;
