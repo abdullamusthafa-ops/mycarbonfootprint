@@ -467,7 +467,8 @@
                         <input type="email" id="emailid" name="emailid"
                             placeholder="your@email.com"
                             autocomplete="email"
-                            aria-describedby="email-error">
+                            aria-describedby="email-error"
+                            onblur="validateEmailField(this)">
                         <span class="field-error" id="email-error" role="alert"></span>
                         <div class="calculate_bton">
                             <button type="button" id="sendReportBtn" class="sharebutton" onclick="shareOnEmail()">
@@ -943,6 +944,21 @@
                 }).catch(function () {});
             }).catch(function () {});
         } catch (e) {}
+    }
+
+    // ── Email inline validation ──
+    function validateEmailField(input) {
+        var errEl  = document.getElementById('email-error');
+        var email  = input.value.trim();
+        var emailRe = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}$/;
+        var fakeRe  = /^(test|fake|asdf|qwerty|example|noemail|noreply|abc123|xxxxx|aaaaa|1234|none|null|no|na)@/i;
+        if (email && (!emailRe.test(email) || fakeRe.test(email))) {
+            errEl.textContent = 'Please enter a valid email address.';
+            input.style.borderColor = '#ef4444';
+        } else {
+            errEl.textContent = '';
+            input.style.borderColor = '';
+        }
     }
 
     // ── Email report ──
